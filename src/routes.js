@@ -6,6 +6,7 @@ import ErrorPage from './Pages/ErrorPage';
 import ContactsCard from './Pages/ContactsCard';
 
 const router = createBrowserRouter([
+
     {
       path: "/",
       element: <MainPage></MainPage>,

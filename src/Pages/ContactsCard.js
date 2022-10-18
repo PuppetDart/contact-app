@@ -14,9 +14,11 @@ export default function ContactsCard() {
 
     const Avatar = styled.div`
         border-radius: 10px;
-        height: 150px;
-        width: 150px;
-        background: ${props => `url(${props.bg}) no-repeat top center`};
+        height: 350px;
+        width: 300px;
+        background: ${props => `url(${props.bg}) no-repeat`};
+        background-size: cover;
+        background-position-x: center;
     `
 
     const Detail =styled.div`
@@ -33,12 +35,11 @@ export default function ContactsCard() {
     `
 
     const { cId } = useParams();
-    console.log('./../avatars/'+Contacts[cId][2]);
 
     return (
         <>
             <ContactsCardSC>
-                <Avatar bg={'./../avatars/'+Contacts[cId][2]}/>
+                <Avatar bg={require( './../avatars/' + ((Contacts[cId][0]).split(' ')).join('') + '.jpg' )}/>
                 <Detail>
                     <h1>{Contacts[cId][0]}</h1>
                     <h4>+91 {Contacts[cId][1]}</h4>

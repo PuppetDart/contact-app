@@ -5,41 +5,50 @@ import Contacts from '../data';
 import globalColors from "../globalVars";
 
 const ContactsCardSC = styled.div`
-    z-index: 1;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     display: flex;
     flex-flow: column;
     gap: 40px;
+
+    margin: 20px 40px;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    z-index: 1;
 `;
 
+const Avatar = styled.div`
+    height: 350px;
+    width: 300px;
+
+    border-radius: 10px;
+    box-shadow: 0 0 40px -10px black;
+
+    background: ${props => `url(${props.bg}) no-repeat`};
+    background-size: cover;
+    background-position-x: center;
+`;
+
+
+const Detail =styled.div`
+    > h4,h1{
+        margin: 0;
+        width: fit-content;
+        color: ${globalColors.darkGrey};
+        backdrop-filter: blur(2px);
+    }
+    > h4{
+        margin-left: 2px;
+        font-weight: 300;
+        letter-spacing: 15px;
+    }
+    > p{
+        color: ${globalColors.darkGrey};
+        backdrop-filter: blur(2px);
+    }
+    color: rgb(110,110,110)
+`
+
 export default function ContactsCard(propsParent) {
-
-    const Avatar = styled.div`
-        box-shadow: 0 0 40px -10px black;
-        border-radius: 10px;
-        height: 350px;
-        width: 300px;
-        background: ${props => `url(${props.bg}) no-repeat`};
-        background-size: cover;
-        background-position-x: center;
-    `
-
-    const Detail =styled.div`
-        > h4,h1{
-            margin: 0;
-            color: ${globalColors.darkGrey};
-        }
-        > h4{
-            font-weight: 300;
-            letter-spacing: 15px;
-            margin-left: 2px;
-        }
-        > p{
-            color: ${globalColors.darkGrey};
-        }
-        color: rgb(110,110,110)
-    `
-
+    
     const { cId } = useParams();
 
     return (

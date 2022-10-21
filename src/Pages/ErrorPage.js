@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
 const ErrorPageSC = styled.div`
-height: 100vh;
-display: flex;
-justify-content: center;
-align-items: center;
-flex-flow: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+    
+    height: 100vh;
 `
 
 export default function ErrorPage() {

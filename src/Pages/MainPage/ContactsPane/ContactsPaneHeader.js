@@ -1,18 +1,20 @@
 import styled, { keyframes } from "styled-components";
 import globalColors from "../../../globalVars";
+import { ReactComponent as ClearIcon } from './../../../icons/clearIcon.svg'
 
-const breatheAnimation = keyframes`
- 0% { background: red }
- 30% { background: rgb(230, 22, 0) }
- 40% { background: rgb(230, 22, 0) }
- 100% { background: red }
-`
+const SearchButtonAnimation = keyframes`
+    0% {transform: rotate(0deg)}
+    20% {transform: rotate(360deg)}
+    100% {transform: rotate(360deg)}
+`;
 
 const ContactsHeaderSC = styled.div`
-    position: absolute;
     display: flex;
+
+    position: absolute;
     top: 25px;
     gap: 10px;
+
     padding: 0 25px;
     height: 40px;
     width: 85%;
@@ -24,36 +26,45 @@ const ContactsHeaderSC = styled.div`
 
 const SearchBox = styled.input`
     width: 80%;
-    outline: none;
-    background: none;
-    border: none;
-    box-shadow: 0 0 15px -3px black;
     padding: 6px 10px 6px 13px;
+    border: none;
+    outline: none;
+    
+    background: none;
+
     font-size: 17px;
     text-decoration: none;
 `;
 
 const SearchButton = styled.div`
-    width: 20%;
-    box-shadow: 0 0 3px 0 red;
-    background-color: red;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 20%;
     height: 40px;
-    animation: ${breatheAnimation} infinite 4s;
+    
+    background-color: red;
+    cursor: pointer;
+`;
+
+const ClearIconSC = styled(ClearIcon)`
+    fill: ${props => props.theme.background === "white" ? "white" : "black"};
+    height: 30%;
+    animation: ${SearchButtonAnimation} 5s ease-in-out 1;
 `;
 
 export default function ContactsHeader(props) {
     return (
         <ContactsHeaderSC>
             <SearchBox
+                spellCheck="false"
                 style={{ backgroundColor: props.theme.background == "white" ? globalColors.dark : "white", color: props.theme.background }}
                 value={props.textInput}
-                onChange={(e) => props.textInputHandler(e.target.value)}>
+                onChange={(e) => props.setTextInput(e.target.value)}>
             </SearchBox>
-            <SearchButton />
+            <SearchButton theme={props.theme} onClick={() => props.setTextInput("")}><ClearIconSC /></SearchButton>
         </ContactsHeaderSC>
     );
 }
-
-
-

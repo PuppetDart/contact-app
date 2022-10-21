@@ -2,10 +2,3 @@ body{
   margin: 0;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
-body
-.MainPage{
-  display: flex;
-}::selection {
-  color: rgb(200,200,200);
-  background: rgb(60,60,60);
-}

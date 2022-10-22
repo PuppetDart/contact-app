@@ -69,13 +69,14 @@ export default function ContactsCard() {
 
     // context for : <DetailsPane> <Outlet   |||x|||   /> </DetailsPane>
     // must be parsed as array - [theme], & not object - {theme}
-    const [theme] = useOutletContext();
+    const [theme, list] = useOutletContext();
 
+    {console.log(list)}
     return (
         <ContactsCardSC>
             {/* require is essential for utilizing any image object */}
             {/* cId - 1 : because the cId seems to start at 2 */}
-            <Avatar bg={require('./../avatars/' + ((contacts[cId - 1].name).split(' ')).join('') + '.jpg')} />
+            <Avatar bg={require('./../avatars/' + ((contacts[cId].name).split(' ')).join('') + '.jpg')} />
             <Detail theme={theme}>
                 <h3>{contacts[cId - 1].occupation.toUpperCase()}</h3>
                 <h1>{contacts[cId - 1].name}</h1>

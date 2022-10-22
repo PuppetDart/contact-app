@@ -28,7 +28,7 @@ const ThemeButtonSC = styled.div`
     z-index: 2;
 
     cursor: pointer;
-    transition: all ease 0.5s;
+    transition: background-color ease 0.5s;
     animation: ${themeButtonAnimation} 8s infinite ease;
 `;
 

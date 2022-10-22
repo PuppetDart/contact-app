@@ -12,7 +12,7 @@ const ContactsFooterSC = styled.div`
     display: flex;
     gap: 10px;
 
-    width: fit-content;
+    width: 80%;
     padding: 25px;
     box-sizing: border-box;
 
@@ -34,11 +34,12 @@ export default function ContactsFooter(props) {
             <ContactsFooterSC theme={theme}>
 
                 <LinkStyled to={'/'}>
-                    <CrudButton theme={theme}><HomeIconSC theme={theme} /></CrudButton>
+                    <CrudButton><HomeIconSC theme={theme} /></CrudButton>
                 </LinkStyled>
                 <LinkStyled to={'addContact'}>
-                    <CrudButton theme={theme}>New</CrudButton>
+                    <CrudButton>New</CrudButton>
                 </LinkStyled>
+
             </ContactsFooterSC>
 
 

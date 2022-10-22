@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createContext } from 'react';
 
 import ThemeButton from '../../Components/ThemeButton';
@@ -14,16 +14,20 @@ import DetailsPane from './DetailsPane/DetailsPane';
 import contacts from '../../data';
 import globalColors from '../../globalVars';
 
+import {db} from './../../firebase-config';
+import {collection, getDocs} from 'firebase/firestore';
+
 export const ThemeProvider = createContext(null);
 
 const MainPageSC = styled.div`
     display: flex;
-    
     overflow-x: hidden;
 `;
 
 export default function MainPage(props) {
 
+    // ------------------------------
+    // --------------- STATE 1 START
     //state managing InputText
     const [textInput, setTextInput] = useState("");
 
@@ -39,24 +43,48 @@ export default function MainPage(props) {
             color: theme.color === globalColors.darkGrey ? globalColors.lightGrey : globalColors.darkGrey
         });
     }
+    // ---------------STATE 1 END
+    // ------------------------------
+    
+    // ------------------------------
+    // --------------- STATE 2 START
+    //state managing InputText
+    const [list, setList] = useState(null);
+    const collectionRef= collection(db, "contacts");
+    
+    async function getRecords(){
+        const data= await getDocs(collectionRef);
+        setList(data.docs.map((doc, index)=>{
+            return { ...doc.data(), id: doc.id, index: (index+1)}
+        }));
+    }
+    
+    useEffect(()=>{
+        getRecords();
+    }, [])
+    // --------------- STATE 2 END
+    // ------------------------------
 
-    //regex 
+
+    
+    // ------------------------------
     const regex = new RegExp(".*" + textInput.toLowerCase() + ".*");
-    //construct the Contact List
-    const ContactListContent = [];
-    contacts.forEach(contact => {
 
-        if (regex.test(contact.name.toLowerCase())) {
+    const ContactListContent = [];
+    list?.forEach(listItem => {
+
+        if (regex.test(listItem.name.toLowerCase())) {
             ContactListContent.push(
-                <LinkContactListItem theme={theme} to={'contacts/' + contact.id} text={contact.name} />
+                <LinkContactListItem theme={theme} to={'contacts/' + listItem.index} text={listItem.name} />
             );
         }
     });
+    // ------------------------------
 
     return (
         <MainPageSC>
 
-            <ThemeProvider.Provider value={{ theme, themeHandler, textInput, setTextInput }}>
+            <ThemeProvider.Provider value={{ list, theme, themeHandler, textInput, setTextInput }}>
 
                 <ContactsPane>
                     <ContactsHeader />

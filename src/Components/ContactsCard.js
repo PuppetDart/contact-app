@@ -24,6 +24,9 @@ const Avatar = styled.div`
     border-radius: 10px;
     box-shadow: 0 0 40px -10px black;
 
+    /* in case direct url passing is needed */
+    /* background: url(${require("./../avatars/WadeWilson.jpg")}); */
+
     background: ${props => `url(${props.bg}) no-repeat`};
     background-size: cover;
     background-position-x: center;
@@ -61,11 +64,17 @@ const ButtonsContainer= styled.div`
 
 export default function ContactsCard() {
 
+    // cId : the 'Id' in '/contact:Id' 
     const { cId } = useParams();
+
+    // context for : <DetailsPane> <Outlet   |||x|||   /> </DetailsPane>
+    // must be parsed as array - [theme], & not object - {theme}
     const [theme] = useOutletContext();
 
     return (
         <ContactsCardSC>
+            {/* require is essential for utilizing any image object */}
+            {/* cId - 1 : because the cId seems to start at 2 */}
             <Avatar bg={require('./../avatars/' + ((contacts[cId - 1].name).split(' ')).join('') + '.jpg')} />
             <Detail theme={theme}>
                 <h3>{contacts[cId - 1].occupation.toUpperCase()}</h3>

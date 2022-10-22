@@ -40,11 +40,6 @@ const SearchBox = styled.input`
     text-decoration: none;
 `;
 
-const SearchButton = styled(CrudButton)`
-    background-color: red;
-    width: 20%;
-`;
-
 const ClearIconSC = styled(ClearIcon)`
     fill: ${props => props.theme.background === "white" ? "white" : "black"};
     height: 30%;
@@ -65,9 +60,9 @@ export default function ContactsHeader(props) {
                 onChange={(e) => setTextInput(e.target.value)}>
             </SearchBox>
 
-            <SearchButton click={() => setTextInput("")}>
+            <CrudButton click={() => setTextInput("")}>
                 <ClearIconSC theme={theme}/>
-            </SearchButton>
+            </CrudButton>
 
         </ContactsHeaderSC>
     );

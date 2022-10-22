@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import styled from 'styled-components/macro';
 import { ThemeProvider } from "../Pages/MainPage/MainPage";
+import ContactsHeader from "../Pages/MainPage/ContactsPane/ContactsPaneHeader";
 
 const CrudButtonSC = styled.div`
     cursor: pointer;
@@ -15,6 +16,10 @@ const CrudButtonSC = styled.div`
     align-items: center;
     user-select: none;
     word-wrap: nowrap;
+
+    ${ContactsHeader} &{
+        background-color: red;
+    }
 `;
 
 export default function CrudButton(props){

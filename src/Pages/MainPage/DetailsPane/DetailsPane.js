@@ -26,8 +26,6 @@ const DetailsPaneSC = styled.div`
     }
 `;
 
-// export default DetailsPaneSC;
-
 export default function DetailsPane(props) {
 
     const { theme } = useContext(ThemeProvider);

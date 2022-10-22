@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {ReactComponent as HomepageIcon} from './../icons/homepageIcon.svg';
 
-const HomePageIconContainer=styled.div`
+const HomePageSC=styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,5 +17,5 @@ const HomepageIconSC=styled(HomepageIcon)`
 `;
 
 export default function Homepage(){
-  return <HomePageIconContainer><HomepageIconSC /></HomePageIconContainer>;
+  return <HomePageSC><HomepageIconSC /></HomePageSC>;
 }

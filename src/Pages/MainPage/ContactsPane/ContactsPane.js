@@ -1,6 +1,8 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
+import { useContext } from 'react';
+import { ThemeProvider } from './../MainPage'
 
-const ContactsPane = styled.div`
+const ContactsPaneSC = styled.div`
     position: relative;
     flex: 2;
     display: flex;
@@ -12,13 +14,15 @@ const ContactsPane = styled.div`
     border-right: 2px rgb(160,160,160) solid;
     
     box-sizing: border-box;
-    box-shadow: 0 0 ${props=> props.theme.background == "white" ? "100px" : "200px"} -40px;
+    box-shadow: 0 0 ${props=> props.theme.background === "white" ? "100px" : "200px"} -40px;
     background: ${props=> props.theme.background};
 `;
 
-export default ContactsPane;
+// export default ContactsPane;
 
-// export default function ContactsPane(){
-//     const {theme}=useContext(ThemeProvider);
-//     return <ContactsPaneSC></ContactsPaneSC>;
-// };
+export default function ContactsPane(props){
+    const {theme}=useContext(ThemeProvider);
+    return <ContactsPaneSC theme={theme}>
+        {props.children}
+    </ContactsPaneSC>;
+};

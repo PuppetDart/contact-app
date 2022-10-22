@@ -1,35 +1,43 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import glCl from "../globalVars";
+import globalColors from "../globalVars";
+import { useContext } from "react";
+import { ThemeProvider } from "../Pages/MainPage/MainPage";
 
 const LinkSC = styled(Link)`
-    display: block;
-
-    width: 90%;
+    text-decoration: none;
+    cursor: pointer;
     height: auto;
+`;
+
+const LinkContactListItemSC = styled(LinkSC)`
+    display: block;
+    
+    width: 90%;
     padding: 10px 0 10px;
     border-radius: 10px;
-
-    text-decoration: none;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    color: ${props=> props.theme.color == glCl.darkGrey ? glCl.darkGrey : glCl.lightGrey};
     word-wrap: wrap;
+    color: ${props=> props.theme.color === globalColors.darkGrey ? globalColors.darkGrey : globalColors.lightGrey};
 
     transition: all ease-in-out 0.2s;
-    cursor: pointer;
     overflow-x: none;
 
     :last-child{
-        padding-bottom: 0;
+        padding-bottom: 65px;
     }
     :first-child{
         padding-top: 0;
     }
     :hover{
-        color: ${props =>props.theme.color == glCl.darkGrey ? "black" : "white"};
+        color: ${props =>props.theme.color === globalColors.darkGrey ? "black" : "white"};
     }
 `;
 
+export function LinkContactListItem(props){
+    const {theme}=useContext(ThemeProvider);
+    return <LinkContactListItemSC  theme={theme} to={props.to}>{props.text}</LinkContactListItemSC >;
+}
+
 export default function LinkStyled(props){
-    return <LinkSC theme={props.theme} to={props.to}>{props.text}</LinkSC>;
+    return <LinkSC to={props.to}>{props.children}</LinkSC>;
 }

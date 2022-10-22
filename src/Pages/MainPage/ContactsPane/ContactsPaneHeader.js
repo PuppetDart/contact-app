@@ -1,5 +1,9 @@
+import { useContext } from "react";
 import styled, { keyframes } from "styled-components";
+import { ThemeProvider } from "../MainPage";
+
 import globalColors from "../../../globalVars";
+import CrudButton from "../../../Components/CrudButton";
 import { ReactComponent as ClearIcon } from './../../../icons/clearIcon.svg'
 
 const SearchButtonAnimation = keyframes`
@@ -10,15 +14,15 @@ const SearchButtonAnimation = keyframes`
 
 const ContactsHeaderSC = styled.div`
     display: flex;
-
+    box-sizing: border-box;
+    
     position: absolute;
     top: 25px;
     gap: 10px;
-
+    
     padding: 0 25px;
     height: 40px;
-    width: 85%;
-    
+    width: 95%;
     > *{
         border-radius: 5px 0 15px 5px;
     }
@@ -36,17 +40,9 @@ const SearchBox = styled.input`
     text-decoration: none;
 `;
 
-const SearchButton = styled.div`
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 20%;
-    height: 40px;
-    
+const SearchButton = styled(CrudButton)`
     background-color: red;
-    cursor: pointer;
+    width: 20%;
 `;
 
 const ClearIconSC = styled(ClearIcon)`
@@ -56,15 +52,23 @@ const ClearIconSC = styled(ClearIcon)`
 `;
 
 export default function ContactsHeader(props) {
+    
+    const { theme, textInput, setTextInput } = useContext(ThemeProvider);
+
     return (
-        <ContactsHeaderSC>
+        <ContactsHeaderSC theme={theme}>
+            
             <SearchBox
                 spellCheck="false"
-                style={{ backgroundColor: props.theme.background == "white" ? globalColors.dark : "white", color: props.theme.background }}
-                value={props.textInput}
-                onChange={(e) => props.setTextInput(e.target.value)}>
+                style={{ backgroundColor: theme.background === "white" ? globalColors.dark : "white", color: theme.background }}
+                value={textInput}
+                onChange={(e) => setTextInput(e.target.value)}>
             </SearchBox>
-            <SearchButton theme={props.theme} onClick={() => props.setTextInput("")}><ClearIconSC /></SearchButton>
+
+            <SearchButton click={() => setTextInput("")}>
+                <ClearIconSC theme={theme}/>
+            </SearchButton>
+
         </ContactsHeaderSC>
     );
 }

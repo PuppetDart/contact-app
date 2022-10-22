@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import styled, { keyframes } from "styled-components";
-import glCl from '../globalVars';
+import globalColors from '../globalVars';
+import { ThemeProvider } from "../Pages/MainPage/MainPage";
 
 import {ReactComponent as DayModeIcon} from './../icons/dayMode.svg';
 import {ReactComponent as NightModeIcon} from './../icons/nightMode.svg';
@@ -21,7 +23,7 @@ const ThemeButtonSC = styled.div`
     padding: 15px;
     border-radius: 50%;
     
-    background-color: ${props => props.theme.background == "white" ? glCl.dark : "white"};
+    background-color: ${props => props.theme.background === "white" ? globalColors.dark : "white"};
     box-shadow: 0 0 4px 0 black;
     z-index: 2;
 
@@ -39,9 +41,9 @@ const NightIconSC=styled(NightModeIcon)`
 
 export default function ThemeButton(props) {
 
-    const iconContent = props.theme.background == "white" ? <NightIconSC/> :  <DayIconSC/> ;
-
-    return <ThemeButtonSC onClick={props.click} theme={props.theme}>
+    const {theme, themeHandler}=useContext(ThemeProvider);
+    const iconContent = theme.background === "white" ? <NightIconSC/> :  <DayIconSC/> ;
+    return <ThemeButtonSC onClick={themeHandler} theme={theme}>
         {iconContent}
     </ThemeButtonSC>
 };

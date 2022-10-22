@@ -1,26 +1,24 @@
 import { Outlet } from 'react-router-dom';
-import styled from 'styled-components';
-import { useContext, useState } from 'react';
+import styled from 'styled-components/macro';
+import { useState } from 'react';
 import { createContext } from 'react';
 
 import ThemeButton from '../../Components/ThemeButton';
 import ContactsPane from './ContactsPane/ContactsPane';
 import ContactsHeader from './ContactsPane/ContactsPaneHeader';
+import ContactsFooter from './ContactsPane/ContactsPaneFooter';
 import ContactsList from './ContactsPane/ContactsPaneList';
-import LinkStyled from '../../Components/LinkStyled';
+import { LinkContactListItem } from '../../Components/LinkStyled';
 import DetailsPane from './DetailsPane/DetailsPane';
 
-import Contacts from '../../data';
+import contacts from '../../data';
 import globalColors from '../../globalVars';
 
-const ThemeProvider = createContext(null);
+export const ThemeProvider = createContext(null);
 
 const MainPageSC = styled.div`
     display: flex;
-    ::selection {
-        color: rgb(200,200,200);
-        background: rgb(60,60,60);
-    }
+    
     overflow-x: hidden;
     overflow-x: hidden;
 `;
@@ -29,9 +27,6 @@ export default function MainPage(props) {
 
     //state managing InputText
     const [textInput, setTextInput] = useState("");
-    const textInputHandler = (x) => {
-        setTextInput(x)
-    }
 
     //state managing theme
     const [theme, setTheme] = useState({
@@ -50,11 +45,11 @@ export default function MainPage(props) {
     const regex = new RegExp(".*" + textInput.toLowerCase() + ".*");
     //construct the Contact List
     const ContactListContent = [];
-    Object.keys(Contacts).forEach(contactID => {
+    contacts.forEach(contact => {
 
-        if (regex.test(Contacts[contactID][0].toLowerCase())) {
+        if (regex.test(contact.name.toLowerCase())) {
             ContactListContent.push(
-                <LinkStyled theme={theme} to={'contacts/' + contactID} text={Contacts[contactID][0]} />
+                <LinkContactListItem theme={theme} to={'contacts/' + contact.id} text={contact.name} />
             );
         }
     });
@@ -62,14 +57,19 @@ export default function MainPage(props) {
     return (
         <MainPageSC>
 
-            <ThemeProvider.Provider value={{ theme, setTheme, textInput, textInputHandler }}>
-                <ContactsPane theme={theme}>
-                    <ThemeButton click={themeHandler} theme={theme}></ThemeButton>
-                    <ContactsHeader textInput={textInput} setTextInput={setTextInput} theme={theme}></ContactsHeader>
-                    <ContactsList theme={theme}>{ContactListContent}</ContactsList>
+            <ThemeProvider.Provider value={{ theme, themeHandler, textInput, setTextInput }}>
+
+                <ContactsPane>
+                    <ContactsHeader />
+                    <ContactsList>{ContactListContent}</ContactsList>
+                    <ContactsFooter />
                 </ContactsPane>
 
-                <DetailsPane theme={theme}> <Outlet /> </DetailsPane>
+                <DetailsPane>
+                    <ThemeButton />
+                    <Outlet context={[theme]} />
+                </DetailsPane>
+
             </ThemeProvider.Provider>
 
         </MainPageSC>

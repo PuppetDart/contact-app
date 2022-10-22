@@ -1,7 +1,8 @@
-import { useParams } from "react-router-dom";
+import { useParams, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
 
-import Contacts from '../data';
+import contacts from '../data';
+import CrudButton from "./CrudButton";
 import globalColors from "../globalVars";
 
 const ContactsCardSC = styled.div`
@@ -9,7 +10,8 @@ const ContactsCardSC = styled.div`
     flex-flow: column;
     gap: 40px;
 
-    margin: 20px 40px;
+    margin: 20px 0px 20px 40px;
+    overflow: hidden;
 
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     z-index: 1;
@@ -27,38 +29,60 @@ const Avatar = styled.div`
     background-position-x: center;
 `;
 
-
-const Detail =styled.div`
+const Detail = styled.div`
     > h4,h1{
         margin: 0;
         width: fit-content;
-        color: ${globalColors.darkGrey};
+        color: ${props => props.theme.background === "white" ? "black" : "white"};
         backdrop-filter: blur(2px);
     }
     > h4{
         margin-left: 2px;
-        font-weight: 300;
         letter-spacing: 15px;
+        font-weight: 300;
+    }
+    > h3{
+        color: ${props => props.theme.background === "white" ? "black" : "white"};
+        letter-spacing: 15px;
+        margin: 0 0 15px;
     }
     > p{
-        color: ${globalColors.darkGrey};
+        color: ${props => props.theme.background === "white" ? globalColors.darkGrey : globalColors.lightGrey};
         backdrop-filter: blur(2px);
+        margin-right: 10px;
     }
-    color: rgb(110,110,110)
-`
+`;
 
-export default function ContactsCard(propsParent) {
-    
+const ButtonsContainer= styled.div`
+    display: flex;
+    gap: 15px;
+    width: max-content;
+`;
+
+export default function ContactsCard() {
+
     const { cId } = useParams();
+    const [theme] = useOutletContext();
 
     return (
-            <ContactsCardSC>
-                <Avatar bg={require( './../avatars/' + ((Contacts[cId][0]).split(' ')).join('') + '.jpg' )}/>
-                <Detail>
-                    <h1>{Contacts[cId][0]}</h1>
-                    <h4>+91 {Contacts[cId][1]}</h4>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis tenetur, a voluptas voluptates quas consequuntur iusto aut? Praesentium ab itaque, excepturi ullam cupiditate dolor in iste suscipit laboriosam vitae, consequatur eum perferendis sequi blanditiis deleniti saepe quas! Eos, aut optio! Rerum odit dignissimos culpa. Deserunt explicabo laudantium expedita optio saepe!</p>
-                </Detail>
-            </ContactsCardSC>
+        <ContactsCardSC>
+            <Avatar bg={require('./../avatars/' + ((contacts[cId - 1].name).split(' ')).join('') + '.jpg')} />
+            <Detail theme={theme}>
+                <h3>{contacts[cId - 1].occupation.toUpperCase()}</h3>
+                <h1>{contacts[cId - 1].name}</h1>
+                <h4> +91 {contacts[cId - 1].number}</h4>
+                <p> Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Debitis tenetur, bn voluptas voluptates quas consequuntur iusto
+                    aut? Praesentium ab itaque, excepturi ullam cupiditate dolor in
+                    iste suscipit laboriosam vitae, consequatur eum perferendis sequi
+                    blanditiis deleniti saepe quas! Eos, aut optio! Rerum odit
+                    dignissimos culpa. Deserunt explicabo laudantium expedita
+                    optio saepe!</p>
+            </Detail>
+            <ButtonsContainer>
+                <CrudButton>Remove</CrudButton>
+                <CrudButton>Update</CrudButton>
+            </ButtonsContainer>
+        </ContactsCardSC>
     );
 };

@@ -1,5 +1,5 @@
 import { useParams, useOutletContext } from "react-router-dom";
-import styled from "styled-components";
+import styled from 'styled-components/macro';
 
 import contacts from '../data';
 import CrudButton from "./CrudButton";

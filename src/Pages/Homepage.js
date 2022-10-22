@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components/macro';
 import {ReactComponent as HomepageIcon} from './../icons/homepageIcon.svg';
 
 const HomePageSC=styled.div`

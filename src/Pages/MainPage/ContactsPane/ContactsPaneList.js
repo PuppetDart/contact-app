@@ -3,25 +3,28 @@ import styled from 'styled-components/macro';
 import globalColors from "../../../globalVars"
 import { ThemeProvider } from '../MainPage';
 
+function ContactsList_hoverHandler(){
+
+}
+
 const ContactsListSC = styled.div`
     padding: 65px 0 0 0;
     margin: 25px 25px 25px 27px;
 
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 
     ::-webkit-scrollbar{
         width: 5px;
     }
     ::-webkit-scrollbar-thumb{
-        background-color: ${props => props.theme.color === globalColors.darkGrey ? globalColors.darkGrey : globalColors.lightGrey};
+        background-color: ${props => props.theme.background === "white" ? globalColors.darkGrey : globalColors.lightGrey};
+        /* background-color: ${props => props.theme.background}; */
     }
-    :hover{
-        overflow-y: scroll;
-    }
-    transition: all ease-in-out 1s;
+    transition: all .3s ease;
 `;
 
 export default function ContactsList(props) {
     const {theme} =useContext(ThemeProvider);
-    return <ContactsListSC theme={theme}>{props.children}</ContactsListSC>
+    return <ContactsListSC onmousehover={ContactsList_hoverHandler} theme={theme}>{props.children}</ContactsListSC>
 };

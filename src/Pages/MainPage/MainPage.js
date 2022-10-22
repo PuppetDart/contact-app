@@ -20,7 +20,6 @@ const MainPageSC = styled.div`
     display: flex;
     
     overflow-x: hidden;
-    overflow-x: hidden;
 `;
 
 export default function MainPage(props) {

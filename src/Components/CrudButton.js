@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import styled from "styled-components";
+import styled from 'styled-components/macro';
 import { ThemeProvider } from "../Pages/MainPage/MainPage";
 
 const CrudButtonSC = styled.div`

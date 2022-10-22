@@ -1,5 +1,5 @@
 import { useOutletContext } from "react-router-dom";
-import styled from "styled-components";
+import styled from 'styled-components/macro';
 import globalColors from "../globalVars";
 import CrudButton from "./../Components/CrudButton";
 import { ReactComponent as AddImageIcon } from "./../icons/addImageIcon.svg";

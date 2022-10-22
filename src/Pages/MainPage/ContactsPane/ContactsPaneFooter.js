@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import styled from "styled-components";
+import styled from 'styled-components/macro';
 import { ThemeProvider } from "../MainPage";
 import LinkStyled from "../../../Components/LinkStyled";
 import CrudButton from "../../../Components/CrudButton";
@@ -12,7 +12,7 @@ const ContactsFooterSC = styled.div`
     display: flex;
     gap: 10px;
 
-    width: 100%;
+    width: fit-content;
     padding: 25px;
     box-sizing: border-box;
 

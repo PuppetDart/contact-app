@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components/macro';
 
 const ErrorPageSC = styled.div`
     display: flex;

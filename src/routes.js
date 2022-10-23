@@ -5,6 +5,7 @@ import ErrorPage from './Pages/ErrorPage';
 import ContactsCard from './Components/ContactsCard';
 import Homepage from './Pages/Homepage';
 import AddContactPage from './Pages/AddContactPage';
+import UpdateContactPage from './Pages/updateContactPage';
 
 const router = createBrowserRouter([
   {
@@ -13,20 +14,20 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage/>,
     children: [
       {
-        path: "contacts/:cId",
-        element: <ContactsCard/>
-      },
-      {
         path: "/",
         element: <Homepage/>
+      },
+      {
+        path: "contacts/:cId",
+        element: <ContactsCard/>
       },
       {
         path: "/addContact",
         element: <AddContactPage/>
       },
       {
-        path: "/updateContact",
-        element: <AddContactPage/>
+        path: "/updateContact/:cId",
+        element: <UpdateContactPage/>
       }
     ]
   },

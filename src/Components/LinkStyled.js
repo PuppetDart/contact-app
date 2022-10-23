@@ -17,7 +17,7 @@ const LinkContactListItemSC = styled(LinkSC)`
     padding: 10px 0 10px;
     border-radius: 10px;
     word-wrap: wrap;
-    color: ${props=> props.theme.color === globalColors.darkGrey ? globalColors.darkGrey : globalColors.lightGrey};
+    color: ${props=> props.theme.color};
 
     transition: all ease-in-out 0.2s;
     overflow-x: none;

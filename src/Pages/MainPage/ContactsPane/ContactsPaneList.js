@@ -15,7 +15,6 @@ const ContactsListSC = styled.div`
     }
     ::-webkit-scrollbar-thumb{
         background-color: ${props => props.scrollVisibility ?(props.theme.background === "white" ? globalColors.darkGrey : globalColors.lightGrey) : props.theme.background};
-        /* background-color: ${props => props.scrollVisibility ? "black" : props.theme.background}; */
     }
 
     transition: all 1s ease-in-out;
@@ -25,14 +24,9 @@ export default function ContactsList(props) {
     
     const [scrollVisibility, setScrollVisibility] = useState(false);
     const {theme} =useContext(ThemeProvider);
-    function ContactsListEnter(e){
-        setScrollVisibility(true);
-        console.log("true");
-    }
-    function ContactsListExit(e){
-        setScrollVisibility(false);
-        console.log("false");
-    }
+    
+    const ContactsListEnter = ()=> setScrollVisibility(true);
+    const ContactsListExit = () => setScrollVisibility(false);
 
     return <ContactsListSC onMouseEnter={ContactsListEnter} onMouseLeave={ContactsListExit} scrollVisibility={scrollVisibility} theme={theme}>{props.children}</ContactsListSC>
 };

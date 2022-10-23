@@ -1,13 +1,13 @@
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import styled from 'styled-components/macro';
 import globalColors from "../globalVars";
 import CrudButton from "./../Components/CrudButton";
 import { ThemeProvider } from "styled-components/macro";
 import { ReactComponent as AddImageIcon } from "./../icons/addImageIcon.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { db, storage } from "../firebase-config";
-import { collection, addDoc } from "firebase/firestore";
-import { ref, uploadBytes } from "firebase/storage";
+import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
+import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 import { getRecords } from "../HelperFunctions/getRecords";
 
@@ -101,37 +101,92 @@ const FormButtonContainer = styled.div`
     gap: 15px
 `;
 
-export default function AddContactPage(props) {
+export default function UpdateContactPage(props) {
+
+    const navigate=useNavigate();
 
     const [theme, list, setList] = useOutletContext();
+    const { cId } = useParams();
 
-    const [nameInput, setNameInput] = useState("");
-    const [numInput, setNumInput] = useState("");
-    const [occuInput, setOccuInput] = useState("");
-    const [imageSelected, setImageSelected] = useState({});
+    const [nameInput, setNameInput] = useState(list[cId - 1].name);
+    const [numInput, setNumInput] = useState(list[cId - 1].number);
+    const [occuInput, setOccuInput] = useState(list[cId - 1].occupation);
+    const [imgIconStyle, setImgIconStyle] = useState({});
+    const [imgSelected, setImageSelected] = useState(false);
     const [fileObjURL, setFileObjURL] = useState("");
     const [file, setFile] = useState("");
 
-    const collectionRef = collection(db, 'contacts1');
-    const imageRef = ref(storage, 'contacts1/' + nameInput.split(' ').join('') + '.jpg');
+    const imageRef = ref(storage, 'contacts1/' + list[cId - 1].name.split(' ').join('') + '.jpg');
+    const newImageRef = ref(storage, 'contacts1/' + nameInput.split(' ').join('') + '.jpg');
 
-    const addContactHandler = async () => {
+    //for setting the current image as state in fileObjURL
+    useEffect(() => {
+        getDownloadURL(imageRef).then((url) => {
+            setFileObjURL(url);
+        });
+        setImgIconStyle({ position: "absolute", bottom: "-10px" });
+    }, []);
+
+    const updateContactHandler = async () => {
         try {
-            //uploading avatar image
-            await uploadBytes(imageRef, file);
+            console.log("imgSelected "+imgSelected);
+            console.log("list[cId-1].name "+list[cId-1].name);
+            console.log("imageRef "+imageRef);
 
-            //uploading contact details
-            addDoc(collectionRef, {
+            console.log("nameInput "+nameInput);
+            console.log("fileObjURL "+ fileObjURL);
+            console.log("newImageRef "+ newImageRef);
+            console.log(file);
+
+            //handling Images
+            if (imgSelected && list[cId-1].name === nameInput) {
+                console.log("name same img diff");
+                deleteObject(imageRef).then(()=>{
+                    uploadBytes(newImageRef, file).then(()=>{
+                        console.log("img deleted & uploaded")
+                    })
+                })
+            }
+            else if(imgSelected && list[cId-1].name !== nameInput){
+                console.log("name diff img diff");
+                deleteObject(imageRef).then(()=>{
+                    uploadBytes(newImageRef, file).then(()=>{
+                        console.log("img deleted & uploaded")
+                    })
+                })
+            }
+            else if(!imgSelected && list[cId-1].name !== nameInput){
+                console.log("name diff img same");
+                await deleteObject(imageRef);
+                await uploadBytes(newImageRef, fileObjURL);
+            }
+
+            //handling Collection
+            const documentRef = doc(db, 'contacts1', list[cId - 1].code);
+            await deleteDoc(documentRef);
+            const collectionRef = collection(db, 'contacts1');
+            await addDoc(collectionRef, {
                 name: nameInput,
                 number: numInput,
-                occupation: occuInput,
-            }).then(() => {
-                getRecords(setList);
-            });
+                occupation: occuInput
+            }).then(()=>{
+                getRecords(setList).then(()=>{
+                })
+            })
         }
         catch (exception) {
             console.log(exception);
         }
+    }
+
+    //for handling the image change 
+    async function inputChangeHandler(e) {
+        if (e.target.files[0]) {
+            setFile(e.target.files[0]);
+            setFileObjURL(URL.createObjectURL(e.target.files[0]));
+        }
+        setImgIconStyle({ position: "absolute", bottom: "-10px" });
+        setImageSelected(true);
     }
 
     const clearForm = () => {
@@ -139,17 +194,7 @@ export default function AddContactPage(props) {
         setNumInput("");
         setOccuInput("");
         setFileObjURL("");
-        setImageSelected({});
-    }
-
-    async function inputChangeHandler(e) {
-        if (e.target.files[0]) {
-            setFile(e.target.files[0]);
-            setFileObjURL(URL.createObjectURL(e.target.files[0]));
-        }
-        setImageSelected(
-            { position: "absolute", bottom: "-10px" }
-        );
+        setImgIconStyle({});
     }
 
     return (
@@ -157,7 +202,7 @@ export default function AddContactPage(props) {
 
             <ThemeProvider theme={theme}>
                 <Avatar file={fileObjURL}>
-                    <AddImageIconSC style={imageSelected} />
+                    <AddImageIconSC style={imgIconStyle} />
                     <ImageInputLayer accept="image/jpg" type="file" onChange={inputChangeHandler} />
                 </Avatar>
                 <FormContainer>
@@ -177,7 +222,7 @@ export default function AddContactPage(props) {
 
             </ThemeProvider>
             <FormButtonContainer>
-                <CrudButton onClick={addContactHandler}>Add Contact</CrudButton>
+                <CrudButton onClick={updateContactHandler}>Update</CrudButton>
                 <CrudButton onClick={clearForm}>Clear</CrudButton>
             </FormButtonContainer>
         </AddContactSC>

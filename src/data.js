@@ -26,12 +26,12 @@ const contacts = [
     {id: 25,name: "Wade Wilson", number: 8888313888, occupation: "Deadpool"},
 ];
 
-const contacts1 = {
+const contacts1 = [
     
-    1: ["Albus Percival Wulfric Brian Dumbledore", 11112111],
-    2: ["Harry James Potter", 987654982]
+    {id: 1,name: "Albus Percival Wulfric Brian Dumbledore", number: 111124111, occupation: "Headmaster"},
+    {id: 2,name: "Harry James Potter", number: 9876549825, occupation: "Auror"},
     
-};
+];
 
 export default contacts;
 export {contacts1};

@@ -60,7 +60,7 @@ export default function ContactsHeader(props) {
                 onChange={(e) => setTextInput(e.target.value)}>
             </SearchBox>
 
-            <CrudButton click={() => setTextInput("")}>
+            <CrudButton onClick={() => setTextInput("")}>
                 <ClearIconSC theme={theme}/>
             </CrudButton>
 

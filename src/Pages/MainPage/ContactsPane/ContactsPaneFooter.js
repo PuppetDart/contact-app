@@ -4,6 +4,8 @@ import { ThemeProvider } from "../MainPage";
 import LinkStyled from "../../../Components/LinkStyled";
 import CrudButton from "../../../Components/CrudButton";
 import { ReactComponent as HomeIcon } from "./../../../icons/homeIcon.svg";
+import { ReactComponent as RefreshIcon } from "./../../../icons/refreshIcon.svg"
+import { getRecords } from "../../../HelperFunctions/getRecords";
 
 const ContactsFooterSC = styled.div`
     position: absolute;
@@ -12,7 +14,7 @@ const ContactsFooterSC = styled.div`
     display: flex;
     gap: 10px;
 
-    width: 80%;
+    width: 90%;
     padding: 25px;
     box-sizing: border-box;
 
@@ -21,18 +23,22 @@ const ContactsFooterSC = styled.div`
 
 const HomeIconSC = styled(HomeIcon)`
     fill: ${props => props.theme.background === "white" ? "white" : "black"};
-    height: 50%;
-    width: 100%;
+    height: 20px;
+`;
+const RefreshIconSC = styled(RefreshIcon)`
+    fill: ${props => props.theme.background === "white" ? "white" : "black"};
+    height: 17px;
 `;
 
 export default function ContactsFooter(props) {
 
-    const { theme } = useContext(ThemeProvider);
+    const { theme, setList } = useContext(ThemeProvider);
 
     return (
 
             <ContactsFooterSC theme={theme}>
 
+                <CrudButton onClick={()=>{getRecords(setList)}}><RefreshIconSC theme={theme}/> </CrudButton>
                 <LinkStyled to={'/'}>
                     <CrudButton><HomeIconSC theme={theme} /></CrudButton>
                 </LinkStyled>

@@ -29,5 +29,5 @@ const CrudButtonSC = styled.div`
 
 export default function CrudButton(props){
     const {theme}=useContext(ThemeProvider);
-    return <CrudButtonSC onClick={props.click} theme={theme}>{props.children}</CrudButtonSC>
+    return <CrudButtonSC onClick={props.onClick} theme={theme}>{props.children}</CrudButtonSC>
 }

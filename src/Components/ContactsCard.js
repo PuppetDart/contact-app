@@ -1,9 +1,15 @@
-import { useParams, useOutletContext } from "react-router-dom";
+import { useParams, useOutletContext, useNavigate } from "react-router-dom";
 import styled from 'styled-components/macro';
 
-import contacts from '../data';
+import { deleteObject, getDownloadURL, ref } from "firebase/storage";
+import { db, storage } from "../firebase-config";
 import CrudButton from "./CrudButton";
 import globalColors from "../globalVars";
+import { getRecords } from "../HelperFunctions/getRecords";
+import { useEffect, useState } from "react";
+import { deleteDoc, doc } from "firebase/firestore";
+
+import LinkStyled from "./LinkStyled";
 
 const ContactsCardSC = styled.div`
     display: flex;
@@ -27,7 +33,7 @@ const Avatar = styled.div`
     /* in case direct url passing is needed */
     /* background: url(${require("./../avatars/WadeWilson.jpg")}); */
 
-    background: ${props => `url(${props.bg}) no-repeat`};
+    background: url(${props => props.bg});
     background-size: cover;
     background-position-x: center;
 `;
@@ -56,42 +62,66 @@ const Detail = styled.div`
     }
 `;
 
-const ButtonsContainer= styled.div`
+const ButtonsContainer = styled.div`
     display: flex;
     gap: 15px;
     width: max-content;
 `;
 
+
 export default function ContactsCard() {
 
+    const navigate = useNavigate();
     // cId : the 'Id' in '/contact:Id' 
     const { cId } = useParams();
+    const [avatarBg, setAvatarBg] = useState("");
 
     // context for : <DetailsPane> <Outlet   |||x|||   /> </DetailsPane>
     // must be parsed as array - [theme], & not object - {theme}
-    const [theme, list] = useOutletContext();
+    const [theme, list, setList] = useOutletContext();
 
-    {console.log(list)}
+    const imageRef = ref(storage, 'contacts1/' + ((list[cId - 1].name).split(' ')).join('') + '.jpg');
+    useEffect(() => {
+        getDownloadURL(imageRef).then((url) => (setAvatarBg(url)));
+    }, [cId]);
+
+    //function to delete contact
+    async function onRemoveHandler() {
+        const documentRef = doc(db, 'contacts1', list[cId - 1].code);
+        await deleteDoc(documentRef).then(() => {
+            console.log(imageRef + " deleted");
+            navigate("/");
+            getRecords(setList);
+        });
+        await deleteObject(imageRef);
+    }
+
     return (
         <ContactsCardSC>
+
             {/* require is essential for utilizing any image object */}
             {/* cId - 1 : because the cId seems to start at 2 */}
-            <Avatar bg={require('./../avatars/' + ((contacts[cId].name).split(' ')).join('') + '.jpg')} />
+            <Avatar bg={avatarBg} />
             <Detail theme={theme}>
-                <h3>{contacts[cId - 1].occupation.toUpperCase()}</h3>
-                <h1>{contacts[cId - 1].name}</h1>
-                <h4> +91 {contacts[cId - 1].number}</h4>
+                <h3>{list[cId - 1].occupation.toUpperCase()}</h3>
+                <h1>{list[cId - 1].name}</h1>
+                <h4> +91 {list[cId - 1].number}</h4>
                 <p> Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Debitis tenetur, bn voluptas voluptates quas consequuntur iusto
                     aut? Praesentium ab itaque, excepturi ullam cupiditate dolor in
                     iste suscipit laboriosam vitae, consequatur eum perferendis sequi
                     blanditiis deleniti saepe quas! Eos, aut optio! Rerum odit
                     dignissimos culpa. Deserunt explicabo laudantium expedita
-                    optio saepe!</p>
+                    optio saepe!
+                    <br /><br />
+                    Lorem ipsum dolor sit amet consectetur aelit. Est, quia.
+                </p>
             </Detail>
             <ButtonsContainer>
-                <CrudButton>Remove</CrudButton>
-                <CrudButton>Update</CrudButton>
+                <CrudButton onClick={onRemoveHandler}>Remove</CrudButton>
+                <LinkStyled to={"/updateContact/" + (cId)}>
+                    <CrudButton>Update</CrudButton>
+                </LinkStyled>
             </ButtonsContainer>
         </ContactsCardSC>
     );

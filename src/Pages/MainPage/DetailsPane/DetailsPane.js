@@ -22,7 +22,7 @@ const DetailsPaneSC = styled.div`
         width: 8px;
     }
     ::-webkit-scrollbar-thumb{
-        background-color: ${props => props.theme.color === globalColors.darkGrey ? globalColors.darkGrey : globalColors.lightGrey};
+        background-color: ${props => props.theme.color};
     }
 `;
 

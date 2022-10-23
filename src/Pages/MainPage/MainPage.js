@@ -13,9 +13,7 @@ import DetailsPane from './DetailsPane/DetailsPane';
 
 import contacts from '../../data';
 import globalColors from '../../globalVars';
-
-import {db} from './../../firebase-config';
-import {collection, getDocs} from 'firebase/firestore';
+import { getRecords } from '../../HelperFunctions/getRecords';
 
 export const ThemeProvider = createContext(null);
 
@@ -24,7 +22,7 @@ const MainPageSC = styled.div`
     overflow-x: hidden;
 `;
 
-export default function MainPage(props) {
+export default function MainPage() {
 
     // ------------------------------
     // --------------- STATE 1 START
@@ -45,28 +43,26 @@ export default function MainPage(props) {
     }
     // ---------------STATE 1 END
     // ------------------------------
-    
+
+
     // ------------------------------
     // --------------- STATE 2 START
-    //state managing InputText
+    //state managing FIREBASE-LIST
     const [list, setList] = useState(null);
-    const collectionRef= collection(db, "contacts");
-    
-    async function getRecords(){
-        const data= await getDocs(collectionRef);
-        setList(data.docs.map((doc, index)=>{
-            return { ...doc.data(), id: doc.id, index: (index+1)}
-        }));
-    }
-    
-    useEffect(()=>{
-        getRecords();
-    }, [])
+
+    useEffect(() => {
+        try {
+            getRecords(setList);
+        }
+        catch (e) {
+            console.log(e);
+            setList(contacts);
+        }
+    }, []);
     // --------------- STATE 2 END
     // ------------------------------
 
 
-    
     // ------------------------------
     const regex = new RegExp(".*" + textInput.toLowerCase() + ".*");
 
@@ -75,7 +71,7 @@ export default function MainPage(props) {
 
         if (regex.test(listItem.name.toLowerCase())) {
             ContactListContent.push(
-                <LinkContactListItem theme={theme} to={'contacts/' + listItem.index} text={listItem.name} />
+                <LinkContactListItem key={listItem.id} theme={theme} to={'contacts/' + listItem.id} text={listItem.name} />
             );
         }
     });
@@ -84,7 +80,7 @@ export default function MainPage(props) {
     return (
         <MainPageSC>
 
-            <ThemeProvider.Provider value={{ list, theme, themeHandler, textInput, setTextInput }}>
+            <ThemeProvider.Provider value={{ list, setList, theme, themeHandler, textInput, setTextInput }}>
 
                 <ContactsPane>
                     <ContactsHeader />
@@ -94,7 +90,7 @@ export default function MainPage(props) {
 
                 <DetailsPane>
                     <ThemeButton />
-                    <Outlet context={[theme]} />
+                    <Outlet context={[theme, list, setList]} />
                 </DetailsPane>
 
             </ThemeProvider.Provider>

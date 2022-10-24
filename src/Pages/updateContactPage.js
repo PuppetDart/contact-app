@@ -1,8 +1,7 @@
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import styled from 'styled-components/macro';
+import styled, { ThemeProvider } from 'styled-components/macro';
 import globalColors from "../globalVars";
-import CrudButton from "./../Components/CrudButton";
-import { ThemeProvider } from "styled-components/macro";
+import CrudButton from "../Components/CrudButton";
 import { ReactComponent as AddImageIcon } from "./../icons/addImageIcon.svg";
 import { useEffect, useState } from "react";
 import { db, storage } from "../firebase-config";
@@ -42,12 +41,12 @@ const Avatar = styled.div`
 `;
 
 const AddImageIconSC = styled(AddImageIcon)`
-    fill: ${props => props.theme.background === "white" ? globalColors.dark : globalColors.lightGrey};
+    fill: ${props => props.theme === "white" ? globalColors.dark : globalColors.lightGrey};
     height: 40px;
     width: auto;
     border-radius: 50%;
-    background-color: ${props => props.theme.background};
-    border: 2px solid  ${props => props.theme.background};
+    background-color: ${props => props.theme=== "white" ? "white" : globalColors.dark};
+    border: 2px solid  ${props => props.theme=== "white" ? "white" : globalColors.dark};
 `;
 
 const ImageInputLayer = styled.input`
@@ -80,18 +79,18 @@ const InputBox = styled.input`
     outline: none;
     box-shadow: 0 0 10px -5px black;
     
-    background-color: ${props => props.theme.background === "white" ? globalColors.dark : globalColors.lightGrey};
+    background-color: ${props => props.theme === "white" ? globalColors.dark : globalColors.lightGrey};
 
-    color: ${props => props.theme.background};
+    color:  ${props => props.theme=== "white" ? "white" : globalColors.dark};
     font-size: 15px;
     text-decoration: none;
     :focus{
-        background-color: ${props => props.theme.background === "white" ? "black" : "white"};
+        background-color: ${props => props.theme === "white" ? "black" : "white"};
     }
 `;
 
 const InputBoxLabel = styled.label`
-    color: ${props => props.theme.color};
+    color: ${props => props.theme=== "white" ? globalColors.darkGrey : globalColors.lightGrey};
     font-size: 12px;
     letter-spacing: 15px;
 `;
@@ -103,7 +102,7 @@ const FormButtonContainer = styled.div`
 
 export default function UpdateContactPage(props) {
 
-    const navigate=useNavigate();
+    const navigate = useNavigate();
 
     const [theme, list, setList] = useOutletContext();
     const { cId } = useParams();
@@ -111,71 +110,60 @@ export default function UpdateContactPage(props) {
     const [nameInput, setNameInput] = useState(list[cId - 1].name);
     const [numInput, setNumInput] = useState(list[cId - 1].number);
     const [occuInput, setOccuInput] = useState(list[cId - 1].occupation);
+    
     const [imgIconStyle, setImgIconStyle] = useState({});
     const [imgSelected, setImageSelected] = useState(false);
+    
+    //for storing file-URL (obtained from firebase/storage)
+    //or file-Object-URL (obtained by converting file-object from Input-File)
     const [fileObjURL, setFileObjURL] = useState("");
+    
+    //for storing raw file-Object (obtained from Input-File (e.target.files[0]))
     const [file, setFile] = useState("");
-
-    const imageRef = ref(storage, 'contacts1/' + list[cId - 1].name.split(' ').join('') + '.jpg');
-    const newImageRef = ref(storage, 'contacts1/' + nameInput.split(' ').join('') + '.jpg');
-
+    
+    const imageRef = ref(storage, 'contacts1/' + list[cId - 1].timestamp + '.jpg') ;
+    
     //for setting the current image as state in fileObjURL
     useEffect(() => {
         getDownloadURL(imageRef).then((url) => {
             setFileObjURL(url);
         });
+        //change style of the addIcon in center of the Avatar
+        //when it contains image
         setImgIconStyle({ position: "absolute", bottom: "-10px" });
     }, []);
-
+    
     const updateContactHandler = async () => {
         try {
-            console.log("imgSelected "+imgSelected);
-            console.log("list[cId-1].name "+list[cId-1].name);
-            console.log("imageRef "+imageRef);
-
-            console.log("nameInput "+nameInput);
-            console.log("fileObjURL "+ fileObjURL);
-            console.log("newImageRef "+ newImageRef);
-            console.log(file);
-
-            //handling Images
-            if (imgSelected && list[cId-1].name === nameInput) {
-                console.log("name same img diff");
-                deleteObject(imageRef).then(()=>{
-                    uploadBytes(newImageRef, file).then(()=>{
-                        console.log("img deleted & uploaded")
-                    })
-                })
-            }
-            else if(imgSelected && list[cId-1].name !== nameInput){
-                console.log("name diff img diff");
-                deleteObject(imageRef).then(()=>{
-                    uploadBytes(newImageRef, file).then(()=>{
-                        console.log("img deleted & uploaded")
-                    })
-                })
-            }
-            else if(!imgSelected && list[cId-1].name !== nameInput){
-                console.log("name diff img same");
-                await deleteObject(imageRef);
-                await uploadBytes(newImageRef, fileObjURL);
-            }
-
+            
             //handling Collection
-            const documentRef = doc(db, 'contacts1', list[cId - 1].code);
-            await deleteDoc(documentRef);
-            const collectionRef = collection(db, 'contacts1');
-            await addDoc(collectionRef, {
-                name: nameInput,
-                number: numInput,
-                occupation: occuInput
-            }).then(()=>{
-                getRecords(setList).then(()=>{
+            if (nameInput != list[cId - 1].name || occuInput != list[cId - 1].occupation || numInput != list[cId - 1].number) {
+                const documentRef = doc(db, 'contacts1', list[cId - 1].code);
+                await deleteDoc(documentRef);
+
+                const collectionRef = collection(db, 'contacts1');
+                addDoc(collectionRef, {
+                    name: nameInput,
+                    number: numInput,
+                    occupation: occuInput,
+                    timestamp: list[cId - 1].timestamp,
                 })
-            })
+            }
+            
+            //handling Images
+            //only if image has been changed
+            if (imgSelected) {
+                await deleteObject(imageRef).then(()=>{          
+                    uploadBytes(imageRef, file);
+                })
+            }
+
         }
         catch (exception) {
             console.log(exception);
+        }
+        finally{
+            getRecords(setList);
         }
     }
 
@@ -184,9 +172,9 @@ export default function UpdateContactPage(props) {
         if (e.target.files[0]) {
             setFile(e.target.files[0]);
             setFileObjURL(URL.createObjectURL(e.target.files[0]));
+            setImageSelected(true);
         }
         setImgIconStyle({ position: "absolute", bottom: "-10px" });
-        setImageSelected(true);
     }
 
     const clearForm = () => {
@@ -200,7 +188,7 @@ export default function UpdateContactPage(props) {
     return (
         <AddContactSC>
 
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={{theme:theme}}>
                 <Avatar file={fileObjURL}>
                     <AddImageIconSC style={imgIconStyle} />
                     <ImageInputLayer accept="image/jpg" type="file" onChange={inputChangeHandler} />

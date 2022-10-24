@@ -42,7 +42,7 @@ const Detail = styled.div`
     > h4,h1{
         margin: 0;
         width: fit-content;
-        color: ${props => props.theme.background === "white" ? "black" : "white"};
+        color: ${props => props.theme === "white" ? "black" : "white"};
         backdrop-filter: blur(2px);
     }
     > h4{
@@ -51,12 +51,12 @@ const Detail = styled.div`
         font-weight: 300;
     }
     > h3{
-        color: ${props => props.theme.background === "white" ? "black" : "white"};
+        color: ${props => props.theme === "white" ? "black" : "white"};
         letter-spacing: 15px;
         margin: 0 0 15px;
     }
     > p{
-        color: ${props => props.theme.background === "white" ? globalColors.darkGrey : globalColors.lightGrey};
+        color: ${props => props.theme === "white" ? globalColors.darkGrey : globalColors.lightGrey};
         backdrop-filter: blur(2px);
         margin-right: 10px;
     }
@@ -67,7 +67,6 @@ const ButtonsContainer = styled.div`
     gap: 15px;
     width: max-content;
 `;
-
 
 export default function ContactsCard() {
 
@@ -80,7 +79,7 @@ export default function ContactsCard() {
     // must be parsed as array - [theme], & not object - {theme}
     const [theme, list, setList] = useOutletContext();
 
-    const imageRef = ref(storage, 'contacts1/' + ((list[cId - 1].name).split(' ')).join('') + '.jpg');
+    const imageRef = ref(storage, 'contacts1/' + list[cId - 1].timestamp + '.jpg');
     useEffect(() => {
         getDownloadURL(imageRef).then((url) => (setAvatarBg(url)));
     }, [cId]);
@@ -89,9 +88,8 @@ export default function ContactsCard() {
     async function onRemoveHandler() {
         const documentRef = doc(db, 'contacts1', list[cId - 1].code);
         await deleteDoc(documentRef).then(() => {
-            console.log(imageRef + " deleted");
-            navigate("/");
             getRecords(setList);
+            navigate("/");
         });
         await deleteObject(imageRef);
     }

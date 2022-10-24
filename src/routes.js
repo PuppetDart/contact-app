@@ -5,7 +5,7 @@ import ErrorPage from './Pages/ErrorPage';
 import ContactsCard from './Components/ContactsCard';
 import Homepage from './Pages/Homepage';
 import AddContactPage from './Pages/AddContactPage';
-import UpdateContactPage from './Pages/updateContactPage';
+import UpdateContactPage from './Pages/UpdateContactPage';
 
 const router = createBrowserRouter([
   {

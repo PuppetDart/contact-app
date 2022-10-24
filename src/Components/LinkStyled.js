@@ -17,7 +17,7 @@ const LinkContactListItemSC = styled(LinkSC)`
     padding: 10px 0 10px;
     border-radius: 10px;
     word-wrap: wrap;
-    color: ${props=> props.theme.color};
+    color: ${props=> props.theme === "white"? globalColors.darkGrey: globalColors.lightGrey};
 
     transition: all ease-in-out 0.2s;
     overflow-x: none;
@@ -29,7 +29,7 @@ const LinkContactListItemSC = styled(LinkSC)`
         padding-top: 0;
     }
     :hover{
-        color: ${props =>props.theme.color === globalColors.darkGrey ? "black" : "white"};
+        color: ${props =>props.theme=== "white" ? "black" : "white"};
     }
 `;
 

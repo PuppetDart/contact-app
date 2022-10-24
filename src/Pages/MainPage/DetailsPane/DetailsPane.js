@@ -11,9 +11,9 @@ const DetailsPaneSC = styled.div`
     height: 100vh;
     min-width: 380px;
     
-    background-color: ${props => props.theme.background === globalColors.dark ? globalColors.dark : "white"};
+    background-color: ${props => props.theme=== "white" ? "white" : globalColors.dark};
     background-image: url(${bgImg});
-    background-blend-mode: ${props => props.theme.background === globalColors.dark ? "color-burn" : "luminosity"};
+    background-blend-mode: ${props => props.theme === "white" ? "luminosity": "color-burn"};
     background-size: cover;
     
     overflow-y: scroll;
@@ -22,7 +22,7 @@ const DetailsPaneSC = styled.div`
         width: 8px;
     }
     ::-webkit-scrollbar-thumb{
-        background-color: ${props => props.theme.color};
+        background-color: ${props => props.theme=== "white" ? globalColors.darkGrey : globalColors.lightGrey};
     }
 `;
 

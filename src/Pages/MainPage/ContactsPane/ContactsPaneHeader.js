@@ -41,27 +41,30 @@ const SearchBox = styled.input`
 `;
 
 const ClearIconSC = styled(ClearIcon)`
-    fill: ${props => props.theme.background === "white" ? "white" : "black"};
+    fill: ${props => props.theme};
     height: 30%;
     animation: ${SearchButtonAnimation} 5s ease-in-out 1;
 `;
 
 export default function ContactsHeader(props) {
-    
+
     const { theme, textInput, setTextInput } = useContext(ThemeProvider);
 
     return (
         <ContactsHeaderSC theme={theme}>
-            
+
             <SearchBox
                 spellCheck="false"
-                style={{ backgroundColor: theme.background === "white" ? globalColors.dark : "white", color: theme.background }}
+                style={{
+                    backgroundColor: theme === "white" ? globalColors.dark : "white",
+                    color: theme=== "white" ? "white" : globalColors.dark
+                }}
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}>
             </SearchBox>
 
             <CrudButton onClick={() => setTextInput("")}>
-                <ClearIconSC theme={theme}/>
+                <ClearIconSC theme={theme} />
             </CrudButton>
 
         </ContactsHeaderSC>

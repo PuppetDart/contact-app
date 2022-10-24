@@ -1,13 +1,14 @@
 import { useOutletContext } from "react-router-dom";
-import styled from 'styled-components/macro';
+import styled, { ThemeProvider } from 'styled-components/macro';
 import globalColors from "../globalVars";
 import CrudButton from "./../Components/CrudButton";
-import { ThemeProvider } from "styled-components/macro";
 import { ReactComponent as AddImageIcon } from "./../icons/addImageIcon.svg";
 import { useState } from "react";
 import { db, storage } from "../firebase-config";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
+
+import { useNavigate } from "react-router-dom";
 
 import { getRecords } from "../HelperFunctions/getRecords";
 
@@ -42,12 +43,12 @@ const Avatar = styled.div`
 `;
 
 const AddImageIconSC = styled(AddImageIcon)`
-    fill: ${props => props.theme.background === "white" ? globalColors.dark : globalColors.lightGrey};
+    fill: ${props => props.theme === "white" ? globalColors.dark : globalColors.lightGrey};
     height: 40px;
     width: auto;
     border-radius: 50%;
-    background-color: ${props => props.theme.background};
-    border: 2px solid  ${props => props.theme.background};
+    background-color: ${props => props.theme === "white" ? "white" : globalColors.dark };
+    border: 2px solid ${props => props.theme === "white" ? "white" : globalColors.dark };
 `;
 
 const ImageInputLayer = styled.input`
@@ -80,18 +81,18 @@ const InputBox = styled.input`
     outline: none;
     box-shadow: 0 0 10px -5px black;
     
-    background-color: ${props => props.theme.background === "white" ? globalColors.dark : globalColors.lightGrey};
+    background-color: ${props => props.theme === "white" ? globalColors.dark : globalColors.lightGrey};
 
-    color: ${props => props.theme.background};
+    color: ${props => props.theme};
     font-size: 15px;
     text-decoration: none;
     :focus{
-        background-color: ${props => props.theme.background === "white" ? "black" : "white"};
+        background-color: ${props => props.theme === "white" ? "black" : "white"};
     }
 `;
 
 const InputBoxLabel = styled.label`
-    color: ${props => props.theme.color};
+    color: ${props => props.theme === "white" ? globalColors.darkGrey : globalColors.lightGrey};
     font-size: 12px;
     letter-spacing: 15px;
 `;
@@ -103,6 +104,7 @@ const FormButtonContainer = styled.div`
 
 export default function AddContactPage(props) {
 
+    const navigate= useNavigate();
     const [theme, list, setList] = useOutletContext();
 
     const [nameInput, setNameInput] = useState("");
@@ -113,21 +115,23 @@ export default function AddContactPage(props) {
     const [file, setFile] = useState("");
 
     const collectionRef = collection(db, 'contacts1');
-    const imageRef = ref(storage, 'contacts1/' + nameInput.split(' ').join('') + '.jpg');
+    const timestamp =Date.now();
+    const imageRef = ref(storage, 'contacts1/' + timestamp + '.jpg');
 
     const addContactHandler = async () => {
         try {
-            //uploading avatar image
-            await uploadBytes(imageRef, file);
-
             //uploading contact details
             addDoc(collectionRef, {
                 name: nameInput,
                 number: numInput,
                 occupation: occuInput,
-            }).then(() => {
+                timestamp: timestamp,
+            }).then((x) => {
                 getRecords(setList);
+                navigate("/");
             });
+            //uploading avatar image
+            await uploadBytes(imageRef, file);
         }
         catch (exception) {
             console.log(exception);
@@ -155,7 +159,7 @@ export default function AddContactPage(props) {
     return (
         <AddContactSC>
 
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={{theme:theme}}>
                 <Avatar file={fileObjURL}>
                     <AddImageIconSC style={imageSelected} />
                     <ImageInputLayer accept="image/jpg" type="file" onChange={inputChangeHandler} />

@@ -11,7 +11,7 @@ const themeButtonAnimation=keyframes`
     40% {transform:rotate(30deg)}
     60% {transform:rotate(-90deg)}
     100% {transform:rotate(0deg)}
-`
+`;
 
 const ThemeButtonSC = styled.div`
     position: fixed;
@@ -23,8 +23,8 @@ const ThemeButtonSC = styled.div`
     padding: 15px;
     border-radius: 50%;
     
-    background-color: ${props => props.theme.background === "white" ? globalColors.dark : "white"};
-    box-shadow: 0 0 4px 0 black;
+    background-color: ${props => props.theme === "white" ? globalColors.dark : "white"};
+    box-shadow: 0 0 18px -10px black;
     z-index: 2;
 
     cursor: pointer;
@@ -34,15 +34,15 @@ const ThemeButtonSC = styled.div`
 
 const DayIconSC=styled(DayModeIcon)`
     fill: black;
-`
+`;
 const NightIconSC=styled(NightModeIcon)`
     fill: wheat;
-`
+`;
 
 export default function ThemeButton(props) {
 
     const {theme, themeHandler}=useContext(ThemeProvider);
-    const iconContent = theme.background === "white" ? <NightIconSC/> :  <DayIconSC/> ;
+    const iconContent = (theme === "white" ? <NightIconSC/> :  <DayIconSC/>) ;
     return <ThemeButtonSC onClick={themeHandler} theme={theme}>
         {iconContent}
     </ThemeButtonSC>

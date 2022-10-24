@@ -1,8 +1,10 @@
+// ------ library tools
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { useState, useEffect } from 'react';
 import { createContext } from 'react';
 
+// ------ components
 import ThemeButton from '../../Components/ThemeButton';
 import ContactsPane from './ContactsPane/ContactsPane';
 import ContactsHeader from './ContactsPane/ContactsPaneHeader';
@@ -11,59 +13,54 @@ import ContactsList from './ContactsPane/ContactsPaneList';
 import { LinkContactListItem } from '../../Components/LinkStyled';
 import DetailsPane from './DetailsPane/DetailsPane';
 
-import contacts from '../../data';
-import globalColors from '../../globalVars';
+// ------ local elements
 import { getRecords } from '../../HelperFunctions/getRecords';
 
-export const ThemeProvider = createContext(null);
-
+//S ------ styled-components
 const MainPageSC = styled.div`
     display: flex;
     overflow-x: hidden;
-`;
+    `;
+//E ------ styled-components
+
+export const ThemeProvider = createContext(null);
 
 export default function MainPage() {
 
     // ------------------------------
-    // --------------- STATE 1 START
-    //state managing InputText
+    //S --------------- STATES
+
+    //state managing FIREBASE-CONTACT-LIST
+    const [list, setList] = useState(null);
+
+    //state managing SearchBox-Input
     const [textInput, setTextInput] = useState("");
 
-    //state managing theme
-    const [theme, setTheme] = useState({
-        background: "white",
-        color: globalColors.darkGrey,
-    });
-    //function to alter theme
+    const [theme, setTheme] = useState("white");
+
+    // --------------- STATE HANDLER FUNCTIONS
     const themeHandler = () => {
-        setTheme({
-            background: theme.background === "white" ? globalColors.dark : "white",
-            color: theme.color === globalColors.darkGrey ? globalColors.lightGrey : globalColors.darkGrey
-        });
+        setTheme(theme === "white" ? "black" : "white");
     }
-    // ---------------STATE 1 END
+    // --------------- STATE HANDLER FUNCTIONS
+    
+    //E --------------- STATES
     // ------------------------------
-
-
-    // ------------------------------
-    // --------------- STATE 2 START
-    //state managing FIREBASE-LIST
-    const [list, setList] = useState(null);
 
     useEffect(() => {
         try {
             getRecords(setList);
         }
-        catch (e) {
-            console.log(e);
-            setList(contacts);
+        catch (exception) {
+            console.log(exception);
         }
     }, []);
-    // --------------- STATE 2 END
-    // ------------------------------
 
 
-    // ------------------------------
+    //S --------------- CONTENT LOADER
+
+    // this code block implements the SEARCH-FUNCTIONALITY
+    // + generates the clickable Contact-Links
     const regex = new RegExp(".*" + textInput.toLowerCase() + ".*");
 
     const ContactListContent = [];
@@ -75,7 +72,7 @@ export default function MainPage() {
             );
         }
     });
-    // ------------------------------
+    //E --------------- CONTENT LOADER
 
     return (
         <MainPageSC>
@@ -90,6 +87,7 @@ export default function MainPage() {
 
                 <DetailsPane>
                     <ThemeButton />
+                    {/* CONTEXT USED BY:  ContactCard, AddContactPage, UpdateContactPage*/}
                     <Outlet context={[theme, list, setList]} />
                 </DetailsPane>
 

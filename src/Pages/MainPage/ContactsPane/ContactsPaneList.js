@@ -14,7 +14,7 @@ const ContactsListSC = styled.div`
         width: 5px;
     }
     ::-webkit-scrollbar-thumb{
-        background-color: ${props => props.scrollVisibility ?(props.theme.background === "white" ? globalColors.darkGrey : globalColors.lightGrey) : props.theme.background};
+        background-color: ${props => props.scrollVisibility ?(props.theme === "white" ? globalColors.darkGrey : globalColors.lightGrey) : props.theme=== "white" ? "white" : globalColors.dark};
     }
 
     transition: all 1s ease-in-out;

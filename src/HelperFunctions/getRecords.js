@@ -18,7 +18,6 @@ async function getRecords(setList) {
         // index - is just the current index (0 based)
         return { ...doc.data(), code: doc.id, id: (index + 1) }
     }));
-    console.log("getRecords Ran");
 }
 
 export { getRecords };

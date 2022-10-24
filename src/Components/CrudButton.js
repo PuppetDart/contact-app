@@ -12,11 +12,11 @@ const CrudButtonSC = styled.div`
     padding: 0 25px;
     border-radius: 5px 0 15px 5px;
     
-    color: ${props=> props.theme.background ==="white" ? "white" : "black"};
+    color: ${props=> props.theme};
     word-wrap: nowrap;
     user-select: none;
     
-    background-color: ${props=> props.theme.background ==="white" ? "black" : "white"};
+    background-color: ${props=> props.theme ==="white" ? "black" : "white"};
     transition: all ease-in-out 0.3s;
     cursor: pointer;
     opacity: 75%;

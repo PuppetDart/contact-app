@@ -82,7 +82,7 @@ export default function ContactsCard() {
 
     // context for : <DetailsPane> <Outlet   |||x|||   /> </DetailsPane>
     // must be parsed as array - [theme], & not object - {theme}
-    const [theme, list, setList] = useOutletContext();
+    const [theme, list, setList, loading, setLoading] = useOutletContext();
 
     const imageRef = ref(storage, 'contacts1/' + list[cId - 1].timestamp + '.jpg');
 
@@ -98,10 +98,14 @@ export default function ContactsCard() {
     //function to delete contact
     async function onRemoveHandler() {
         try {
+            setLoading(true);
             const documentRef = doc(db, 'contacts1', list[cId - 1].code);
             await deleteDoc(documentRef).then(() => {
-                getRecords(setList);
-                navigate("/");
+                getRecords(setList).then(() => {
+                    navigate("/");
+                    setLoading(false);
+                }
+                );
             });
             await deleteObject(imageRef);
         }
@@ -114,7 +118,6 @@ export default function ContactsCard() {
         <ContactsCardSC
             initial={{ opacity: 0 }}
             transition={{ duration: 0.6, type: "just", delay: 0.2 }}
-
             animate={{ opacity: 1 }}
         >
 
@@ -137,9 +140,9 @@ export default function ContactsCard() {
                 </p>
             </Detail>
             <ButtonsContainer>
-                <CrudButton initial={{y:100}} onClick={onRemoveHandler}>Remove</CrudButton>
+                <CrudButton initial={{ y: 100 }} onClick={onRemoveHandler}>Remove</CrudButton>
                 <LinkStyled to={"/updateContact/" + (cId)}>
-                    <CrudButton initial={{y:100}} delay={0.05} >Update</CrudButton>
+                    <CrudButton initial={{ y: 100 }} delay={0.05} >Update</CrudButton>
                 </LinkStyled>
             </ButtonsContainer>
         </ContactsCardSC>

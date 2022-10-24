@@ -21,7 +21,7 @@ const HomepageIconSC = styled(HomepageIcon)`
 export default function Homepage() {
   return <HomePageSC
     initial={{ opacity:0 }}
-    transition={{ duration: 0.6, type: "just", delay: 0.2 }}
+    transition={{ duration: 0.6, type: "just", delay: 0.4 }}
     animate={{ opacity:1 }}
   >
     <HomepageIconSC />

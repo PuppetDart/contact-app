@@ -7,12 +7,12 @@ import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 import { getRecords } from "../HelperFunctions/getRecords";
-import {ContainerSC, FormButtonContainer, Avatar, AddImageIconSC, ImageInputLayer, FormContainer, FormElement, InputBox, InputBoxLabel} from './../Components/AddUpdateForm';
+import { ContainerSC, FormButtonContainer, Avatar, AddImageIconSC, ImageInputLayer, FormContainer, FormElement, InputBox, InputBoxLabel } from './../Components/AddUpdateForm';
 
 export default function UpdateContactPage(props) {
 
     const navigate = useNavigate();
-    const [theme, list, setList] = useOutletContext();
+    const [theme, list, setList, loading, setLoading] = useOutletContext();
     const { cId } = useParams();
 
     const [nameInput, setNameInput] = useState(list[cId - 1].name);
@@ -24,17 +24,17 @@ export default function UpdateContactPage(props) {
 
     //to handle style of AddImageIconSC when file selected
     const [imgIconStyle, setImgIconStyle] = useState({});
-    
+
     //for file-URL (obtained from firebase/storage) or
     //file-Object-URL (obtained by converting file-object from Input-File)
     const [fileObjURL, setFileObjURL] = useState("");
-    
+
     //for raw file-Object (obtained from Input-File (e.target.files[0]))
     const [file, setFile] = useState("");
-    
+
     //reference to the current image in firebase/storage
-    const imageRef = ref(storage, 'contacts1/' + list[cId - 1].timestamp + '.jpg') ;
-    
+    const imageRef = ref(storage, 'contacts1/' + list[cId - 1].timestamp + '.jpg');
+
     //for setting the current image as state in fileObjURL
     useEffect(() => {
         getDownloadURL(imageRef).then((url) => {
@@ -44,12 +44,13 @@ export default function UpdateContactPage(props) {
         //when it contains image
         setImgIconStyle({ position: "absolute", bottom: "-10px" });
     }, []);
-    
+
     // ----------------------------------------------------------
     //S ------------------------------------- EVENT HANDLERS
     const updateContactHandler = async () => {
         try {
-            
+            setLoading(true);
+
             //handling Collection
             //only if any field changed
             if (nameInput != list[cId - 1].name || occuInput != list[cId - 1].occupation || numInput != list[cId - 1].number) {
@@ -62,24 +63,25 @@ export default function UpdateContactPage(props) {
                     number: numInput,
                     occupation: occuInput,
                     timestamp: list[cId - 1].timestamp,
+                }).then(() => {
+                    getRecords(setList).then(() => {
+                        navigate("/");
+                        setLoading(false);
+                    })
                 })
             }
-            
+
             //handling Images
             //only if new-image selected
             if (imgSelected) {
-                await deleteObject(imageRef).then(()=>{          
+                await deleteObject(imageRef).then(() => {
                     uploadBytes(imageRef, file);
-                    navigate("/");
                 })
             }
 
         }
         catch (exception) {
             console.log(exception);
-        }
-        finally{
-            getRecords(setList);
         }
     }
 
@@ -103,9 +105,13 @@ export default function UpdateContactPage(props) {
     // ----------------------------------------------------------
 
     return (
-        <ContainerSC>
+        <ContainerSC
+            initial={{ opacity: 0 }}
+            transition={{ duration: 0.6, type: "just", delay: 0.2 }}
+            animate={{ opacity: 1 }}
+        >
 
-            <ThemeProvider theme={{theme:theme}}>
+            <ThemeProvider theme={{ theme: theme }}>
                 <Avatar file={fileObjURL}>
                     <AddImageIconSC style={imgIconStyle} />
                     <ImageInputLayer accept="image/jpg" type="file" onChange={inputChangeHandler} />
@@ -127,8 +133,8 @@ export default function UpdateContactPage(props) {
 
             </ThemeProvider>
             <FormButtonContainer>
-                <CrudButton onClick={updateContactHandler}>Update</CrudButton>
-                <CrudButton onClick={clearForm}>Clear</CrudButton>
+                <CrudButton initial={{ y: 100 }} onClick={updateContactHandler}>Update</CrudButton>
+                <CrudButton initial={{ y: 100 }} delay={0.05} onClick={clearForm}>Clear</CrudButton>
             </FormButtonContainer>
         </ContainerSC>
     );

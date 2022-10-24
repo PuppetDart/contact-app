@@ -3,7 +3,8 @@ import { createContext } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
-import {motion} from 'framer-motion';
+import { motion } from 'framer-motion';
+import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 
 // ------ components
 import ThemeButton from '../../Components/ThemeButton';
@@ -25,13 +26,33 @@ const variants = {
 }
 
 //S ------ styled-components
+const LoadScr = styled(motion.div)`
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const Loader = styled(motion.div)`
+    height: 20px;
+    width: 20px;
+    background-color: white;
+`;
+
+
 const MainPageSC = styled(motion.div)`
     display: flex;
     overflow-x: hidden;
 
-    background-color: ${props => props.theme=== "white" ? "white" : globalColors.dark};
+    background-color: ${props => props.theme === "white" ? "white" : globalColors.dark};
     background-image: url(${bgImg});
-    background-blend-mode: ${props => props.theme === "white" ? "luminosity": "color-burn"};
+    background-blend-mode: ${props => props.theme === "white" ? "luminosity" : "color-burn"};
     background-size: cover;
 `;
 //E ------ styled-components
@@ -43,6 +64,8 @@ export default function MainPage() {
     // ------------------------------
     //S --------------- STATES
 
+    const [loading, setLoading] = useState(false);
+
     //state managing FIREBASE-CONTACT-LIST
     const [list, setList] = useState(null);
 
@@ -53,7 +76,7 @@ export default function MainPage() {
     const themeHandler = () => {
         setTheme(theme === "white" ? "black" : "white");
     }
-    
+
     //E --------------- STATES
     // ------------------------------
 
@@ -87,27 +110,33 @@ export default function MainPage() {
     //E --------------- CONTENT LOADER
 
     return (
-        <MainPageSC
-        theme={theme}
-        variants={{variants}}
-        >
+        <>
+            {loading && <LoadScr>
+                <ClimbingBoxLoader color='white'/>
+            </LoadScr>}
+            <MainPageSC
+                theme={theme}
+                variants={{ variants }}
+            >
 
-            <ThemeProvider.Provider value={{ list, setList, theme, themeHandler, textInput, setTextInput }}>
+                <ThemeProvider.Provider value={{ list, setList, theme, themeHandler, textInput, setTextInput }}>
 
-                <ContactsPane>
-                    <ContactsHeader />
-                    <ContactsList>{ContactListContent}</ContactsList>
-                    <ContactsFooter />
-                </ContactsPane>
+                    <ContactsPane>
+                        <ContactsHeader />
+                        <ContactsList>{ContactListContent}</ContactsList>
+                        <ContactsFooter />
+                    </ContactsPane>
 
-                <DetailsPane>
-                    <ThemeButton />
-                    {/* CONTEXT USED BY:  ContactCard, AddContactPage, UpdateContactPage*/}
-                    <Outlet context={[theme, list, setList]} />
-                </DetailsPane>
+                    <DetailsPane>
+                        <ThemeButton />
+                        {/* CONTEXT USED BY:  ContactCard, AddContactPage, UpdateContactPage*/}
+                        <Outlet context={[theme, list, setList, loading, setLoading]} />
+                    </DetailsPane>
 
-            </ThemeProvider.Provider>
+                </ThemeProvider.Provider>
 
-        </MainPageSC>
+            </MainPageSC>
+        </>
+
     );
 }

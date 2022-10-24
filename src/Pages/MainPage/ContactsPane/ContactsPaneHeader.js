@@ -34,7 +34,6 @@ const ContactsHeaderSC = styled.div`
 `;
 
 const SearchBox = styled(motion.input)`
-    width: 20px;
     padding: 6px 13px 6px 13px;
     border: none;
     outline: none;

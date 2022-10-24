@@ -49,9 +49,9 @@ export default function ThemeButton(props) {
     return <ThemeButtonSC
         onClick={themeHandler}
         theme={theme}
-        initial={{ opacity: 0 }}
-        transition={{duration:1, delay: 0.5}}
-        animate={{ x: [null, 100, 0], opacity:1 }}
+        initial={{ opacity: 0}}
+        transition={{default:{duration:1, delay: 0.6}}}
+        animate={{ opacity:1}}
     >
         {iconContent}
     </ThemeButtonSC>

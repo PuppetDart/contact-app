@@ -1,8 +1,9 @@
 // ------ library tools
-import { Outlet } from 'react-router-dom';
-import styled from 'styled-components/macro';
-import { useState, useEffect } from 'react';
 import { createContext } from 'react';
+import { Outlet } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import styled from 'styled-components/macro';
+import {motion} from 'framer-motion';
 
 // ------ components
 import ThemeButton from '../../Components/ThemeButton';
@@ -15,11 +16,23 @@ import DetailsPane from './DetailsPane/DetailsPane';
 
 // ------ local elements [function/data/Icon]
 import { getRecords } from '../../HelperFunctions/getRecords';
+import globalColors from '../../globalVars';
+import bgImg from './../../images/bg1.jpg'
+
+const variants = {
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 },
+}
 
 //S ------ styled-components
-const MainPageSC = styled.div`
+const MainPageSC = styled(motion.div)`
     display: flex;
     overflow-x: hidden;
+
+    background-color: ${props => props.theme=== "white" ? "white" : globalColors.dark};
+    background-image: url(${bgImg});
+    background-blend-mode: ${props => props.theme === "white" ? "luminosity": "color-burn"};
+    background-size: cover;
 `;
 //E ------ styled-components
 
@@ -74,7 +87,10 @@ export default function MainPage() {
     //E --------------- CONTENT LOADER
 
     return (
-        <MainPageSC>
+        <MainPageSC
+        theme={theme}
+        variants={{variants}}
+        >
 
             <ThemeProvider.Provider value={{ list, setList, theme, themeHandler, textInput, setTextInput }}>
 

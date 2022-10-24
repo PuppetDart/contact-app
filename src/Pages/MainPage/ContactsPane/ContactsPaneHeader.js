@@ -1,6 +1,7 @@
 // ------ library tools
 import { useContext } from "react";
 import styled, { keyframes } from 'styled-components/macro';
+import {motion} from 'framer-motion';
 
 // ------ components
 import CrudButton from "../../../Components/CrudButton";
@@ -32,9 +33,9 @@ const ContactsHeaderSC = styled.div`
     }
 `;
 
-const SearchBox = styled.input`
-    width: 80%;
-    padding: 6px 10px 6px 13px;
+const SearchBox = styled(motion.input)`
+    width: 20px;
+    padding: 6px 13px 6px 13px;
     border: none;
     outline: none;
     
@@ -58,6 +59,10 @@ export default function ContactsHeader(props) {
         <ContactsHeaderSC theme={theme}>
 
             <SearchBox
+                placeholder=". . ."
+                autoFocus
+                initial={{width: "50px"}}
+                whileFocus={{width: "80%"}}
                 spellCheck="false"
                 style={{
                     backgroundColor: theme === "white" ? globalColors.dark : "white",

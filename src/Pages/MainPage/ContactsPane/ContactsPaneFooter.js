@@ -19,7 +19,7 @@ const ContactsFooterSC = styled.div`
     bottom: 0px;
     display: flex;
     gap: 10px;
-
+    
     width: 90%;
     padding: 25px;
     box-sizing: border-box;
@@ -44,12 +44,12 @@ export default function ContactsFooter(props) {
 
             <ContactsFooterSC theme={theme}>
 
-                <CrudButton onClick={()=>{getRecords(setList)}}><RefreshIconSC theme={theme}/> </CrudButton>
+                <CrudButton initial={{x:-400}} delay={0.1} onClick={()=>{getRecords(setList)}}><RefreshIconSC theme={theme}/> </CrudButton>
                 <LinkStyled to={'/'}>
-                    <CrudButton><HomeIconSC theme={theme} /></CrudButton>
+                    <CrudButton initial={{x:-400}} delay={0.2}><HomeIconSC theme={theme} /></CrudButton>
                 </LinkStyled>
                 <LinkStyled to={'addContact'}>
-                    <CrudButton>New</CrudButton>
+                    <CrudButton initial={{x:-400}} delay={0.3}>New</CrudButton>
                 </LinkStyled>
 
             </ContactsFooterSC>

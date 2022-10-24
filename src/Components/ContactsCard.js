@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import styled from 'styled-components/macro';
 import { useParams, useOutletContext, useNavigate } from "react-router-dom";
+import { motion } from 'framer-motion';
 import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db, storage } from "../firebase-config";
@@ -15,31 +16,31 @@ import globalColors from "../globalVars";
 import { getRecords } from "../HelperFunctions/getRecords";
 
 //S ------ styled-components
-const ContactsCardSC = styled.div`
+const ContactsCardSC = styled(motion.div)`
     display: flex;
     flex-flow: column;
     gap: 40px;
 
     margin: 20px 0px 20px 40px;
-    overflow: hidden;
 
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     z-index: 1;
-`;
+    `;
 
 const Avatar = styled.div`
     height: 350px;
     width: 300px;
-
+    
     border-radius: 10px;
     box-shadow: 0 0 40px -10px black;
-
+    
     /* in case direct url passing is needed */
     /* background: url(${require("./../avatars/WadeWilson.jpg")}); */
-
+    
     background: url(${props => props.bg});
     background-size: cover;
     background-position-x: center;
+    z-index: 3;
 `;
 
 const Detail = styled.div`
@@ -69,7 +70,6 @@ const Detail = styled.div`
 const ButtonsContainer = styled.div`
     display: flex;
     gap: 15px;
-    width: max-content;
 `;
 //E ------ styled-components
 
@@ -111,7 +111,12 @@ export default function ContactsCard() {
     }
 
     return (
-        <ContactsCardSC>
+        <ContactsCardSC
+            initial={{ opacity: 0 }}
+            transition={{ duration: 0.6, type: "just", delay: 0.2 }}
+
+            animate={{ opacity: 1 }}
+        >
 
             {/* require is essential for utilizing any image object */}
             {/* cId - 1 : because the cId seems to start at 2 */}
@@ -132,9 +137,9 @@ export default function ContactsCard() {
                 </p>
             </Detail>
             <ButtonsContainer>
-                <CrudButton onClick={onRemoveHandler}>Remove</CrudButton>
+                <CrudButton initial={{y:100}} onClick={onRemoveHandler}>Remove</CrudButton>
                 <LinkStyled to={"/updateContact/" + (cId)}>
-                    <CrudButton>Update</CrudButton>
+                    <CrudButton initial={{y:100}} delay={0.05} >Update</CrudButton>
                 </LinkStyled>
             </ButtonsContainer>
         </ContactsCardSC>

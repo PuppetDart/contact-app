@@ -1,10 +1,11 @@
 import styled from 'styled-components/macro';
+import { motion } from 'framer-motion';
 
 import globalColors from "../globalVars";
 import { ReactComponent as AddImageIcon } from "./../icons/addImageIcon.svg";
 
 //S ------ styled-components
-const ContainerSC = styled.div`
+const ContainerSC = styled(motion.div)`
     display: flex;
     flex-flow: column;
     gap: 40px;

@@ -28,7 +28,11 @@ export default function ContactsList(props) {
     const ContactsListEnter = () => setScrollVisibility(true);
     const ContactsListExit = () => setScrollVisibility(false);
 
-    return (<ContactsListSC onMouseEnter={ContactsListEnter} onMouseLeave={ContactsListExit} scrollVisibility={scrollVisibility} theme={theme}>
+    return (<ContactsListSC
+        onMouseEnter={ContactsListEnter}
+        onMouseLeave={ContactsListExit}
+        scrollVisibility={scrollVisibility}
+        theme={theme}>
         {props.children}
     </ContactsListSC>);
 };

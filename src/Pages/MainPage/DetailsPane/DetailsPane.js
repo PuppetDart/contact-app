@@ -16,6 +16,7 @@ const DetailsPaneSC = styled.div`
     background-blend-mode: ${props => props.theme === "white" ? "luminosity": "color-burn"};
     background-size: cover;
     
+    overflow-x: hidden;
     overflow-y: scroll;
 
     ::-webkit-scrollbar{

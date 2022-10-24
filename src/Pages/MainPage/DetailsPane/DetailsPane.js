@@ -1,7 +1,7 @@
-import styled from 'styled-components/macro';
 import { useContext } from 'react';
-import { ThemeProvider } from '../MainPage';
+import styled from 'styled-components/macro';
 
+import { ThemeProvider } from '../MainPage';
 import globalColors from '../../../globalVars';
 import bgImg from './../../../images/bg1.jpg'
 

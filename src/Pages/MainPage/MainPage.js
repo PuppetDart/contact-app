@@ -13,14 +13,14 @@ import ContactsList from './ContactsPane/ContactsPaneList';
 import { LinkContactListItem } from '../../Components/LinkStyled';
 import DetailsPane from './DetailsPane/DetailsPane';
 
-// ------ local elements
+// ------ local elements [function/data/Icon]
 import { getRecords } from '../../HelperFunctions/getRecords';
 
 //S ------ styled-components
 const MainPageSC = styled.div`
     display: flex;
     overflow-x: hidden;
-    `;
+`;
 //E ------ styled-components
 
 export const ThemeProvider = createContext(null);
@@ -37,16 +37,15 @@ export default function MainPage() {
     const [textInput, setTextInput] = useState("");
 
     const [theme, setTheme] = useState("white");
-
-    // --------------- STATE HANDLER FUNCTIONS
     const themeHandler = () => {
         setTheme(theme === "white" ? "black" : "white");
     }
-    // --------------- STATE HANDLER FUNCTIONS
     
     //E --------------- STATES
     // ------------------------------
 
+    //fetch from firebase contacts-list
+    //when MainPage Mounts
     useEffect(() => {
         try {
             getRecords(setList);

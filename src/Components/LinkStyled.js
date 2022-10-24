@@ -1,9 +1,11 @@
-import styled from 'styled-components/macro';
-import { Link } from "react-router-dom";
-import globalColors from "../globalVars";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
+import styled from 'styled-components/macro';
+
+import globalColors from "../globalVars";
 import { ThemeProvider } from "../Pages/MainPage/MainPage";
 
+//S ------ styled-components
 const LinkSC = styled(Link)`
     text-decoration: none;
     cursor: pointer;
@@ -32,6 +34,7 @@ const LinkContactListItemSC = styled(LinkSC)`
         color: ${props =>props.theme=== "white" ? "black" : "white"};
     }
 `;
+//E ------ styled-components
 
 export function LinkContactListItem(props){
     const {theme}=useContext(ThemeProvider);

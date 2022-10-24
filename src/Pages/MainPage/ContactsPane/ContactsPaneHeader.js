@@ -1,9 +1,13 @@
+// ------ library tools
 import { useContext } from "react";
 import styled, { keyframes } from 'styled-components/macro';
-import { ThemeProvider } from "../MainPage";
 
-import globalColors from "../../../globalVars";
+// ------ components
 import CrudButton from "../../../Components/CrudButton";
+
+// ------ local elements
+import { ThemeProvider } from "../MainPage";
+import globalColors from "../../../globalVars";
 import { ReactComponent as ClearIcon } from './../../../icons/clearIcon.svg'
 
 const SearchButtonAnimation = keyframes`
@@ -12,10 +16,10 @@ const SearchButtonAnimation = keyframes`
     100% {transform: rotate(360deg)}
 `;
 
+//S ------ styled-components
 const ContactsHeaderSC = styled.div`
     display: flex;
     box-sizing: border-box;
-    
     position: absolute;
     top: 25px;
     gap: 10px;
@@ -34,10 +38,9 @@ const SearchBox = styled.input`
     border: none;
     outline: none;
     
-    background: none;
-
     font-size: 17px;
     text-decoration: none;
+    background: none;
 `;
 
 const ClearIconSC = styled(ClearIcon)`
@@ -45,6 +48,7 @@ const ClearIconSC = styled(ClearIcon)`
     height: 30%;
     animation: ${SearchButtonAnimation} 5s ease-in-out 1;
 `;
+//E ------ styled-components
 
 export default function ContactsHeader(props) {
 

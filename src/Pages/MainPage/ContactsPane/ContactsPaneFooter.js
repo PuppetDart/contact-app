@@ -7,7 +7,7 @@ import { ThemeProvider } from "../MainPage";
 import LinkStyled from "../../../Components/LinkStyled";
 import CrudButton from "../../../Components/CrudButton";
 
-// ------ local elements
+// ------ local elements [function/data/Icon]
 import globalColors from "../../../globalVars";
 import { getRecords } from "../../../HelperFunctions/getRecords";
 import { ReactComponent as HomeIcon } from "./../../../icons/homeIcon.svg";

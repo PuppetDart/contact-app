@@ -13,6 +13,7 @@ const themeButtonAnimation=keyframes`
     100% {transform:rotate(0deg)}
 `;
 
+//S ------ styled-components
 const ThemeButtonSC = styled.div`
     position: fixed;
     bottom: 40px;
@@ -38,6 +39,7 @@ const DayIconSC=styled(DayModeIcon)`
 const NightIconSC=styled(NightModeIcon)`
     fill: wheat;
 `;
+//E ------ styled-components
 
 export default function ThemeButton(props) {
 

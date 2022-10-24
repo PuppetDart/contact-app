@@ -1,16 +1,20 @@
-import { useParams, useOutletContext, useNavigate } from "react-router-dom";
-import styled from 'styled-components/macro';
-
-import { deleteObject, getDownloadURL, ref } from "firebase/storage";
-import { db, storage } from "../firebase-config";
-import CrudButton from "./CrudButton";
-import globalColors from "../globalVars";
-import { getRecords } from "../HelperFunctions/getRecords";
+// ------ library tools
 import { useEffect, useState } from "react";
+import styled from 'styled-components/macro';
+import { useParams, useOutletContext, useNavigate } from "react-router-dom";
+import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { deleteDoc, doc } from "firebase/firestore";
+import { db, storage } from "../firebase-config";
 
+// ------ components
+import CrudButton from "./CrudButton";
 import LinkStyled from "./LinkStyled";
 
+// ------ local elements [function/data/Icon]
+import globalColors from "../globalVars";
+import { getRecords } from "../HelperFunctions/getRecords";
+
+//S ------ styled-components
 const ContactsCardSC = styled.div`
     display: flex;
     flex-flow: column;
@@ -47,18 +51,18 @@ const Detail = styled.div`
     }
     > h4{
         margin-left: 2px;
-        letter-spacing: 15px;
         font-weight: 300;
+        letter-spacing: 15px;
     }
     > h3{
+        margin: 0 0 15px;
         color: ${props => props.theme === "white" ? "black" : "white"};
         letter-spacing: 15px;
-        margin: 0 0 15px;
     }
     > p{
-        color: ${props => props.theme === "white" ? globalColors.darkGrey : globalColors.lightGrey};
-        backdrop-filter: blur(2px);
         margin-right: 10px;
+        backdrop-filter: blur(2px);
+        color: ${props => props.theme === "white" ? globalColors.darkGrey : globalColors.lightGrey};
     }
 `;
 
@@ -67,6 +71,7 @@ const ButtonsContainer = styled.div`
     gap: 15px;
     width: max-content;
 `;
+//E ------ styled-components
 
 export default function ContactsCard() {
 
@@ -80,18 +85,29 @@ export default function ContactsCard() {
     const [theme, list, setList] = useOutletContext();
 
     const imageRef = ref(storage, 'contacts1/' + list[cId - 1].timestamp + '.jpg');
+
     useEffect(() => {
-        getDownloadURL(imageRef).then((url) => (setAvatarBg(url)));
+        try {
+            getDownloadURL(imageRef).then((url) => (setAvatarBg(url)));
+        }
+        catch (exception) {
+            console.log(exception);
+        }
     }, [cId]);
 
     //function to delete contact
     async function onRemoveHandler() {
-        const documentRef = doc(db, 'contacts1', list[cId - 1].code);
-        await deleteDoc(documentRef).then(() => {
-            getRecords(setList);
-            navigate("/");
-        });
-        await deleteObject(imageRef);
+        try {
+            const documentRef = doc(db, 'contacts1', list[cId - 1].code);
+            await deleteDoc(documentRef).then(() => {
+                getRecords(setList);
+                navigate("/");
+            });
+            await deleteObject(imageRef);
+        }
+        catch (exception) {
+            console.log(exception);
+        }
     }
 
     return (

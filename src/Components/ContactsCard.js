@@ -14,6 +14,7 @@ import LinkStyled from "./LinkStyled";
 // ------ local elements [function/data/Icon]
 import globalColors from "../globalVars";
 import { getRecords } from "../HelperFunctions/getRecords";
+import LoadScr from "./LoadScr";
 
 //S ------ styled-components
 const ContactsCardSC = styled(motion.div)`
@@ -21,11 +22,11 @@ const ContactsCardSC = styled(motion.div)`
     flex-flow: column;
     gap: 40px;
 
-    margin: 25px 0px 20px 40px;
+    margin: 25px 10px 25px 40px;
 
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     z-index: 1;
-    `;
+`;
 
 const Avatar = styled.div`
     height: 350px;
@@ -78,22 +79,32 @@ export default function ContactsCard() {
     const navigate = useNavigate();
     // cId : the 'Id' in '/contact:Id' 
     const { cId } = useParams();
-    const [avatarBg, setAvatarBg] = useState("");
+    const [avatarBg, setAvatarBg] = useState(""); 
+    const [currentAvatar, setCurrentAvatar] = useState(""); 
 
     // context for : <DetailsPane> <Outlet   |||x|||   /> </DetailsPane>
     // must be parsed as array - [theme], & not object - {theme}
     const [theme, list, setList, loading, setLoading] = useOutletContext();
 
-    const imageRef = ref(storage, 'contacts1/' + list[cId - 1].timestamp + '.jpg');
+    var imageRef = "";
 
     useEffect(() => {
         try {
-            getDownloadURL(imageRef).then((url) => (setAvatarBg(url)));
+            if(list){
+                imageRef=ref(storage, 'contacts1/' + list[cId - 1].timestamp + '.jpg');
+                getDownloadURL(imageRef).then((url) => {
+                    setAvatarBg(url);
+                    setCurrentAvatar(cId-1);
+                });
+            }
+            else{
+                getRecords(setList);
+            }
         }
         catch (exception) {
             console.log(exception);
         }
-    }, [cId]);
+    }, [cId, list]);
 
     //function to delete contact
     async function onRemoveHandler() {
@@ -115,7 +126,9 @@ export default function ContactsCard() {
     }
 
     return (
-        <ContactsCardSC
+        <>
+        {list && currentAvatar===(cId-1)? <ContactsCardSC
+            key={list[cId-1].id}
             initial={{ opacity: 0 }}
             transition={{ duration: 0.6, type: "just", delay: 0.2 }}
             animate={{ opacity: 1 }}
@@ -145,6 +158,7 @@ export default function ContactsCard() {
                     <CrudButton initial={{ y: 100 }} delay={0.05} >Update</CrudButton>
                 </LinkStyled>
             </ButtonsContainer>
-        </ContactsCardSC>
+        </ContactsCardSC> : <LoadScr/>}
+        </>
     );
 };

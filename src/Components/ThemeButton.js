@@ -47,11 +47,15 @@ export default function ThemeButton(props) {
     const { theme, themeHandler } = useContext(ThemeProvider);
     const iconContent = (theme === "white" ? <NightIconSC /> : <DayIconSC />);
     return <ThemeButtonSC
+        whileHover={{scale: 3}}
         onClick={themeHandler}
         theme={theme}
-        initial={{ opacity: 0}}
-        transition={{default:{duration:1, delay: 0.6}}}
-        animate={{ opacity:1}}
+        initial={{ opacity: 0 , scale: 0.5}}
+        transition={{
+            opacity: {duration:1, delay: 0.6},
+            scale: { duration: 3, type: "spring" },
+        }}
+        animate={{ opacity:1, scale:1.5 }}
     >
         {iconContent}
     </ThemeButtonSC>

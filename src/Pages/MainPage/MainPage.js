@@ -4,7 +4,6 @@ import { Outlet } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import { motion } from 'framer-motion';
-import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 
 // ------ components
 import ThemeButton from '../../Components/ThemeButton';
@@ -14,6 +13,7 @@ import ContactsFooter from './ContactsPane/ContactsPaneFooter';
 import ContactsList from './ContactsPane/ContactsPaneList';
 import { LinkContactListItem } from '../../Components/LinkStyled';
 import DetailsPane from './DetailsPane/DetailsPane';
+import LoadScr from '../../Components/LoadScr';
 
 // ------ local elements [function/data/Icon]
 import { getRecords } from '../../HelperFunctions/getRecords';
@@ -26,18 +26,6 @@ const variants = {
 }
 
 //S ------ styled-components
-const LoadScr = styled(motion.div)`
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
 
 const MainPageSC = styled(motion.div)`
     display: flex;
@@ -104,9 +92,7 @@ export default function MainPage() {
 
     return (
         <>
-            {loading && <LoadScr>
-                <ClimbingBoxLoader color='white'/>
-            </LoadScr>}
+            {loading && <LoadScr/>}
             <MainPageSC
                 theme={theme}
                 variants={{ variants }}

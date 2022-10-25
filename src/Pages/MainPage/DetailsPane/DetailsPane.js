@@ -11,11 +11,6 @@ const DetailsPaneSC = styled.div`
     height: 100vh;
     min-width: 380px;
     
-    background-color: ${props => props.theme=== "white" ? "white" : globalColors.dark};
-    background-image: url(${bgImg});
-    background-blend-mode: ${props => props.theme === "white" ? "luminosity": "color-burn"};
-    background-size: cover;
-    
     overflow-x: hidden;
     overflow-y: scroll;
 

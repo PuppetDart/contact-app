@@ -21,7 +21,7 @@ const ContactsCardSC = styled(motion.div)`
     flex-flow: column;
     gap: 40px;
 
-    margin: 20px 0px 20px 40px;
+    margin: 25px 0px 20px 40px;
 
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     z-index: 1;

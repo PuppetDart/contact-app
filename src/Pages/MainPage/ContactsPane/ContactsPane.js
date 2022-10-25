@@ -13,7 +13,9 @@ const ContactsPaneSC = styled(motion.div)`
     gap: 20px;
 
     height: 100vh;
-    min-width: 320px;
+    min-width: 330px;
+    left: -10px;
+    padding-left: 10px;
     border-right: 2px rgb(160,160,160) solid;
     box-sizing: border-box;
     

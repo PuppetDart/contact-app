@@ -121,6 +121,7 @@ export default function UpdateContactPage() {
                     <ImageInputLayer accept="image/jpg" type="file" onChange={inputChangeHandler} />
                 </Avatar>
                 <Form
+                    theme={theme}
                     nameInput={nameInput}
                     setNameInput={setNameInput}
                     numInput={numInput}

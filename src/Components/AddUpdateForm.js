@@ -12,20 +12,31 @@ import { ReactComponent as WorkIcon } from "./../icons/workIcon.svg";
 const IconStyleObj = `
     height: 14px;
     width: 14px;
-    fill: black;
-    border: 4px solid black;
     padding: 8px;
     border-radius: 50%;
+    transition: all ease-in-out 0.1s;
+    :hover{
+        scale: 1.05;
+    }
+    :active{
+        scale: 0.9;
+    }
 `;
 
 const CallIconSC = styled(CallIcon)`
-    ${IconStyleObj}    
+    ${IconStyleObj}
+    fill: ${props => props.theme === "white" ? globalColors.dark : "white"};
+    border: 4px solid ${props => props.theme === "white" ? globalColors.dark : globalColors.lightGrey};
 `;
 const NameIconSC = styled(NameIcon)`
-    ${IconStyleObj}    
+    ${IconStyleObj}
+    fill: ${props => props.theme === "white" ? globalColors.dark : "white"};
+    border: 4px solid ${props => props.theme === "white" ? globalColors.dark : globalColors.lightGrey};
 `;
 const WorkIconSC = styled(WorkIcon)`
-    ${IconStyleObj}    
+    ${IconStyleObj}
+    fill: ${props => props.theme === "white" ? globalColors.dark : "white"};
+    border: 4px solid ${props => props.theme === "white" ? globalColors.dark : globalColors.lightGrey};
 `;
 
 const ContainerSC = styled(motion.div)`
@@ -47,7 +58,7 @@ const Avatar = styled.div`
     align-items: center;
 
     height: 350px;
-    width: 300px;
+    max-width: 300px;
     border-radius: 10px;
     border: 2px ${globalColors.darkGrey} solid;
     background: url(${props => props.file});
@@ -119,6 +130,8 @@ const InputBox = styled.input`
     color: ${props => props.theme.theme};
     font-size: 15px;
     text-decoration: none;
+
+    transition: background-color ease-in-out 0.2s;
     :focus{
         background-color: ${props => props.theme.theme === "white" ? "black" : "white"};
     }
@@ -147,7 +160,7 @@ export default function Form(props) {
                     <InputBoxLabel htmlFor="name">NAME</InputBoxLabel>
                     <InputBox value={props.nameInput} onChange={(e) => { props.setNameInput(e.target.value) }} type="text" id="name" />
                 </InputContainerSC>
-                <NameIconSC />
+                <NameIconSC theme={props.theme} onClick={(e) => { props.setNameInput("") }}/>
             </FormElement>
             <FormElement>
                 <InputContainerSC>
@@ -157,14 +170,14 @@ export default function Form(props) {
                         <InputBox  style={{ width:"100%" }} value={props.numInput} onChange={(e) => props.setNumInput(e.target.value)} type="contact" id="number" />
                     </MultiInputBoxContainer>
                 </InputContainerSC>
-                <CallIconSC />
+                <CallIconSC theme={props.theme} onClick={(e) => { props.setNumInput("") }}/>
             </FormElement>
             <FormElement>
                 <InputContainerSC>
                     <InputBoxLabel htmlFor="occupation">OCCUPATION</InputBoxLabel>
                     <InputBox value={props.occuInput} onChange={(e) => props.setOccuInput(e.target.value)} type="text" id="occupation" />
                 </InputContainerSC>
-                <WorkIconSC />
+                <WorkIconSC theme={props.theme} onClick={(e) => { props.setOccuInput("") }}/>
             </FormElement>
         </FormContainer>
     );

@@ -27,7 +27,7 @@ const ThemeButtonSC = styled(motion.div)`
     
     background-color: ${props => props.theme === "white" ? globalColors.dark : "white"};
     box-shadow: 0 0 18px -10px black;
-    z-index: 2;
+    z-index: 4;
 
     cursor: pointer;
     transition: background-color ease 0.5s;

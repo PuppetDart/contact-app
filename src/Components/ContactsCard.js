@@ -127,7 +127,7 @@ export default function ContactsCard() {
 
     return (
         <>
-        {list && currentAvatar===(cId-1)? <ContactsCardSC
+        {list && currentAvatar===(cId-1) && avatarBg? <ContactsCardSC
             key={list[cId-1].id}
             initial={{ opacity: 0 }}
             transition={{ duration: 0.6, type: "just", delay: 0.2 }}

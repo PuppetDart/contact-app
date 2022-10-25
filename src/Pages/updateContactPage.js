@@ -7,9 +7,8 @@ import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 import { getRecords } from "../HelperFunctions/getRecords";
-import { ContainerSC, FormButtonContainer, Avatar, AddImageIconSC, ImageInputLayer, FormContainer, FormElement, InputBox, InputBoxLabel } from './../Components/AddUpdateForm';
-
-export default function UpdateContactPage(props) {
+import Form, { ContainerSC, FormButtonContainer, Avatar, AddImageIconSC, ImageInputLayer } from './../Components/AddUpdateForm';
+export default function UpdateContactPage() {
 
     const navigate = useNavigate();
     const [theme, list, setList, loading, setLoading] = useOutletContext();
@@ -49,14 +48,14 @@ export default function UpdateContactPage(props) {
     //S ------------------------------------- EVENT HANDLERS
     const updateContactHandler = async () => {
         try {
-            
+
             //handling Collection
             //only if any field changed
             if (nameInput !== list[cId - 1].name || occuInput !== list[cId - 1].occupation || numInput !== list[cId - 1].number) {
                 setLoading(true);
                 const documentRef = doc(db, 'contacts1', list[cId - 1].code);
                 await deleteDoc(documentRef);
-                
+
                 const collectionRef = collection(db, 'contacts1');
                 addDoc(collectionRef, {
                     name: nameInput,
@@ -64,8 +63,7 @@ export default function UpdateContactPage(props) {
                     occupation: occuInput,
                     timestamp: list[cId - 1].timestamp,
                 }).then(() => {
-                    getRecords(setList).then(() => {
-                        navigate("/");
+                    getRecords(setList).then(()=>{
                         setLoading(false);
                     })
                 })
@@ -76,15 +74,27 @@ export default function UpdateContactPage(props) {
             if (imgSelected) {
                 setLoading(true);
                 await deleteObject(imageRef).then(() => {
-                    uploadBytes(imageRef, file);
-                    setLoading(false);
+                    uploadBytes(imageRef, file).then(()=>{
+                        setLoading(false);
+                    })
                 })
             }
-
+            
         }
         catch (exception) {
             console.log(exception);
         }
+        finally{
+            navigate("/");
+        }
+    }
+
+    const clearForm = () => {
+        setNameInput("");
+        setNumInput("");
+        setOccuInput("");
+        setFileObjURL("");
+        setImgIconStyle({});
     }
 
     async function inputChangeHandler(e) {
@@ -95,21 +105,13 @@ export default function UpdateContactPage(props) {
         }
         setImgIconStyle({ position: "absolute", bottom: "-10px" });
     }
-
-    const clearForm = () => {
-        setNameInput("");
-        setNumInput("");
-        setOccuInput("");
-        setFileObjURL("");
-        setImgIconStyle({});
-    }
     //E ------------------------------------- EVENT HANDLERS
     // ----------------------------------------------------------
 
     return (
         <ContainerSC
             initial={{ opacity: 0 }}
-            transition={{ duration: 0.6, type: "just", delay: 0.2 }}
+            transition={{ duration: 0.2, type: "just" }}
             animate={{ opacity: 1 }}
         >
 
@@ -118,20 +120,14 @@ export default function UpdateContactPage(props) {
                     <AddImageIconSC style={imgIconStyle} />
                     <ImageInputLayer accept="image/jpg" type="file" onChange={inputChangeHandler} />
                 </Avatar>
-                <FormContainer>
-                    <FormElement>
-                        <InputBoxLabel htmlFor="name">NAME</InputBoxLabel>
-                        <InputBox value={nameInput} onChange={(e) => { setNameInput(e.target.value) }} type="text" id="name" />
-                    </FormElement>
-                    <FormElement>
-                        <InputBoxLabel htmlFor="number">NUMBER</InputBoxLabel>
-                        <InputBox value={numInput} onChange={(e) => setNumInput(e.target.value)} type="number" id="number" />
-                    </FormElement>
-                    <FormElement>
-                        <InputBoxLabel htmlFor="occupation">OCCUPATION</InputBoxLabel>
-                        <InputBox value={occuInput} onChange={(e) => setOccuInput(e.target.value)} type="text" id="occupation" />
-                    </FormElement>
-                </FormContainer>
+                <Form
+                    nameInput={nameInput}
+                    setNameInput={setNameInput}
+                    numInput={numInput}
+                    setNumInput={setNumInput}
+                    occuInput={occuInput}
+                    setOccuInput={setOccuInput}
+                />
 
             </ThemeProvider>
             <FormButtonContainer>

@@ -7,6 +7,9 @@ import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db, storage } from "../firebase-config";
 
+import { ReactComponent as CallIcon } from "./../icons/callIcon.svg"
+import { CallIconSC } from "./AddUpdateForm";
+
 // ------ components
 import CrudButton from "./CrudButton";
 import LinkStyled from "./LinkStyled";
@@ -17,6 +20,33 @@ import { getRecords } from "../HelperFunctions/getRecords";
 import LoadScr from "./LoadScr";
 
 //S ------ styled-components
+
+const IconContainer = styled(motion.div)`
+    display: flex;
+    text-align: end;
+`;
+const CallIconMini = styled(CallIcon)`
+    height: 14px;
+    width: 14px;
+    fill: ${props => props.theme === "white" ? globalColors.dark : globalColors.lightGrey};
+`;
+
+const Divider = styled(motion.div)`
+    height: 1px;
+    width: 500px;
+    margin: 7px 7px 7px 0;
+    background: linear-gradient(to left, transparent 10%, ${globalColors.lightGrey} 75%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+`;
+
+const ContactContainer = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 20px;
+`;
+
 const ContactsCardSC = styled(motion.div)`
     display: flex;
     flex-flow: column;
@@ -45,23 +75,22 @@ const Avatar = styled.div`
 `;
 
 const Detail = styled.div`
-    > h4,h1{
+    h4,h1{
         margin: 0;
         width: fit-content;
         color: ${props => props.theme === "white" ? "black" : "white"};
         backdrop-filter: blur(2px);
     }
-    > h4{
-        margin-left: 2px;
+    h4{
         font-weight: 300;
         letter-spacing: 15px;
     }
-    > h3{
+    h3{
         margin: 0 0 15px;
         color: ${props => props.theme === "white" ? "black" : "white"};
         letter-spacing: 15px;
     }
-    > p{
+    p{
         margin-right: 10px;
         backdrop-filter: blur(2px);
         color: ${props => props.theme === "white" ? globalColors.darkGrey : globalColors.lightGrey};
@@ -79,8 +108,8 @@ export default function ContactsCard() {
     const navigate = useNavigate();
     // cId : the 'Id' in '/contact:Id' 
     const { cId } = useParams();
-    const [avatarBg, setAvatarBg] = useState(""); 
-    const [currentAvatar, setCurrentAvatar] = useState(""); 
+    const [avatarBg, setAvatarBg] = useState("");
+    const [currentAvatar, setCurrentAvatar] = useState("");
 
     // context for : <DetailsPane> <Outlet   |||x|||   /> </DetailsPane>
     // must be parsed as array - [theme], & not object - {theme}
@@ -90,14 +119,14 @@ export default function ContactsCard() {
 
     useEffect(() => {
         try {
-            if(list){
-                imageRef=ref(storage, 'contacts1/' + list[cId - 1].timestamp + '.jpg');
+            if (list) {
+                imageRef = ref(storage, 'contacts1/' + list[cId - 1].timestamp + '.jpg');
                 getDownloadURL(imageRef).then((url) => {
                     setAvatarBg(url);
-                    setCurrentAvatar(cId-1);
+                    setCurrentAvatar(cId - 1);
                 });
             }
-            else{
+            else {
                 getRecords(setList);
             }
         }
@@ -127,38 +156,48 @@ export default function ContactsCard() {
 
     return (
         <>
-        {list && currentAvatar===(cId-1) && avatarBg? <ContactsCardSC
-            key={list[cId-1].id}
-            initial={{ opacity: 0 }}
-            transition={{ duration: 0.6, type: "just", delay: 0.2 }}
-            animate={{ opacity: 1 }}
-        >
+            {list && currentAvatar === (cId - 1) ? <ContactsCardSC
+                key={list[cId - 1].id}
+                initial={{ opacity: 0 }}
+                transition={{ duration: 0.6, type: "just", delay: 0.2 }}
+                animate={{ opacity: 1 }}
+            >
 
-            {/* require is essential for utilizing any image object */}
-            {/* cId - 1 : because the cId seems to start at 2 */}
-            <Avatar bg={avatarBg} />
-            <Detail theme={theme}>
-                <h3>{list[cId - 1].occupation.toUpperCase()}</h3>
-                <h1>{list[cId - 1].name}</h1>
-                <h4> +91 {list[cId - 1].number}</h4>
-                <p> Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Debitis tenetur, bn voluptas voluptates quas consequuntur iusto
-                    aut? Praesentium ab itaque, excepturi ullam cupiditate dolor in
-                    iste suscipit laboriosam vitae, consequatur eum perferendis sequi
-                    blanditiis deleniti saepe quas! Eos, aut optio! Rerum odit
-                    dignissimos culpa. Deserunt explicabo laudantium expedita
-                    optio saepe!
-                    <br /><br />
-                    Lorem ipsum dolor sit amet consectetur aelit. Est, quia.
-                </p>
-            </Detail>
-            <ButtonsContainer>
-                <CrudButton initial={{ y: 100 }} onClick={onRemoveHandler}>Remove</CrudButton>
-                <LinkStyled to={"/updateContact/" + (cId)}>
-                    <CrudButton initial={{ y: 100 }} delay={0.05} >Update</CrudButton>
-                </LinkStyled>
-            </ButtonsContainer>
-        </ContactsCardSC> : <LoadScr/>}
+                {/* require is essential for utilizing any image object */}
+                {/* cId - 1 : because the cId seems to start at 2 */}
+                <Avatar bg={avatarBg} />
+                <Detail theme={theme}>
+                    <h3>{list[cId - 1].occupation.toUpperCase()}</h3>
+                    <h1>{list[cId - 1].name}</h1>
+                    <Divider />
+                    <ContactContainer>
+                        <IconContainer
+                            animate={{ rotate: [0, -10, 10, -20, 20, -30, 30, -20, 20, 0] }}
+                            transition={{rotate: {duration:1.5, delay: 0.6}}}
+                        >
+                            <CallIconMini theme={theme}/>
+                        </IconContainer>
+                        <h4> +91 {list[cId - 1].number}</h4>
+                    </ContactContainer>
+                    <Divider />
+                    <p> Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Debitis tenetur, bn voluptas voluptates quas consequuntur iusto
+                        aut? Praesentium ab itaque, excepturi ullam cupiditate dolor in
+                        iste suscipit laboriosam vitae, consequatur eum perferendis sequi
+                        blanditiis deleniti saepe quas! Eos, aut optio! Rerum odit
+                        dignissimos culpa. Deserunt explicabo laudantium expedita
+                        optio saepe!
+                        <br /><br />
+                        Lorem ipsum dolor sit amet consectetur aelit. Est, quia.
+                    </p>
+                </Detail>
+                <ButtonsContainer>
+                    <CrudButton initial={{ y: 100 }} onClick={onRemoveHandler}>Remove</CrudButton>
+                    <LinkStyled to={"/updateContact/" + (cId)}>
+                        <CrudButton initial={{ y: 100 }} delay={0.05} >Update</CrudButton>
+                    </LinkStyled>
+                </ButtonsContainer>
+            </ContactsCardSC> : <LoadScr />}
         </>
     );
 };

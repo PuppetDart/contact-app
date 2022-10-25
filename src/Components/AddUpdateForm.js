@@ -3,14 +3,37 @@ import { motion } from 'framer-motion';
 
 import globalColors from "../globalVars";
 import { ReactComponent as AddImageIcon } from "./../icons/addImageIcon.svg";
+import { ReactComponent as CallIcon } from "./../icons/callIcon.svg";
+import { ReactComponent as NameIcon } from "./../icons/nameIcon.svg";
+import { ReactComponent as WorkIcon } from "./../icons/workIcon.svg";
 
 //S ------ styled-components
+
+const IconStyleObj = `
+    height: 14px;
+    width: 14px;
+    fill: black;
+    border: 4px solid black;
+    padding: 8px;
+    border-radius: 50%;
+`;
+
+const CallIconSC = styled(CallIcon)`
+    ${IconStyleObj}    
+`;
+const NameIconSC = styled(NameIcon)`
+    ${IconStyleObj}    
+`;
+const WorkIconSC = styled(WorkIcon)`
+    ${IconStyleObj}    
+`;
+
 const ContainerSC = styled(motion.div)`
     display: flex;
     flex-flow: column;
     gap: 40px;
 
-    margin: 20px 40px;
+    margin: 20px 40px 25px;
 
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     z-index: 1;
@@ -40,8 +63,8 @@ const AddImageIconSC = styled(AddImageIcon)`
     height: 40px;
     width: auto;
     border-radius: 50%;
-    border: 2px solid ${props => props.theme.theme === "white" ? "white" : globalColors.dark };
-    background-color: ${props => props.theme.theme === "white" ? "white" : globalColors.dark };
+    border: 2px solid ${props => props.theme.theme === "white" ? "white" : globalColors.dark};
+    background-color: ${props => props.theme.theme === "white" ? "white" : globalColors.dark};
 `;
 
 const ImageInputLayer = styled.input`
@@ -56,6 +79,7 @@ const ImageInputLayer = styled.input`
 `;
 
 const FormContainer = styled.div`
+    position: relative;
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -64,9 +88,23 @@ const FormContainer = styled.div`
 
 const FormElement = styled.div`
     display: flex;
+    align-items: end;
+    gap: 15px;
+`;
+const MultiInputBoxContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 15px;
+`;
+
+const InputContainerSC = styled.div`
+    display: flex;
     flex-flow: column;
     justify-content: center;
-    gap: 4px;
+    width: 80%;
+    max-width: 800px;
+    gap: 5px;
 `;
 
 const InputBox = styled.input`
@@ -98,4 +136,36 @@ const FormButtonContainer = styled.div`
 `;
 //E ------ styled-components
 
-export {ContainerSC, FormButtonContainer, Avatar, AddImageIconSC, ImageInputLayer, FormContainer, FormElement, InputBox, InputBoxLabel};
+export { ContainerSC, FormButtonContainer, Avatar, AddImageIconSC, ImageInputLayer };
+
+export default function Form(props) {
+
+    return (
+        <FormContainer>
+            <FormElement>
+                <InputContainerSC>
+                    <InputBoxLabel htmlFor="name">NAME</InputBoxLabel>
+                    <InputBox value={props.nameInput} onChange={(e) => { props.setNameInput(e.target.value) }} type="text" id="name" />
+                </InputContainerSC>
+                <NameIconSC />
+            </FormElement>
+            <FormElement>
+                <InputContainerSC>
+                    <InputBoxLabel htmlFor="number">NUMBER</InputBoxLabel>
+                    <MultiInputBoxContainer>
+                        <InputBox style={{ width:"45px" }} value={"+91"} disabled={true} type="text" id="areaCode" />
+                        <InputBox  style={{ width:"100%" }} value={props.numInput} onChange={(e) => props.setNumInput(e.target.value)} type="contact" id="number" />
+                    </MultiInputBoxContainer>
+                </InputContainerSC>
+                <CallIconSC />
+            </FormElement>
+            <FormElement>
+                <InputContainerSC>
+                    <InputBoxLabel htmlFor="occupation">OCCUPATION</InputBoxLabel>
+                    <InputBox value={props.occuInput} onChange={(e) => props.setOccuInput(e.target.value)} type="text" id="occupation" />
+                </InputContainerSC>
+                <WorkIconSC />
+            </FormElement>
+        </FormContainer>
+    );
+}

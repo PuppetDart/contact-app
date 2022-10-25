@@ -9,12 +9,11 @@ import { db, storage } from "../firebase-config";
 
 // ------ components
 import CrudButton from "./../Components/CrudButton";
-import { ContainerSC, FormButtonContainer, Avatar, AddImageIconSC, ImageInputLayer, FormContainer, FormElement, InputBox, InputBoxLabel } from './../Components/AddUpdateForm';
+import Form, { ContainerSC, FormButtonContainer, Avatar, AddImageIconSC, ImageInputLayer } from './../Components/AddUpdateForm';
 
 import { getRecords } from "../HelperFunctions/getRecords";
 
-
-export default function AddContactPage(props) {
+export default function AddContactPage() {
 
     const navigate = useNavigate();
 
@@ -88,7 +87,7 @@ export default function AddContactPage(props) {
     return (
         <ContainerSC
             initial={{ opacity: 0 }}
-            transition={{ duration: 0.6, type: "just", delay: 0.2 }}
+            transition={{ duration: 0.2, type: "just"}}
             animate={{ opacity: 1 }}
         >
 
@@ -97,20 +96,14 @@ export default function AddContactPage(props) {
                     <AddImageIconSC style={imgIconStyle} />
                     <ImageInputLayer accept="image/jpg" type="file" onChange={inputChangeHandler} />
                 </Avatar>
-                <FormContainer>
-                    <FormElement>
-                        <InputBoxLabel htmlFor="name">NAME</InputBoxLabel>
-                        <InputBox value={nameInput} onChange={(e) => { setNameInput(e.target.value) }} type="text" id="name" />
-                    </FormElement>
-                    <FormElement>
-                        <InputBoxLabel htmlFor="number">NUMBER</InputBoxLabel>
-                        <InputBox value={numInput} onChange={(e) => setNumInput(e.target.value)} type="number" id="number" />
-                    </FormElement>
-                    <FormElement>
-                        <InputBoxLabel htmlFor="occupation">OCCUPATION</InputBoxLabel>
-                        <InputBox value={occuInput} onChange={(e) => setOccuInput(e.target.value)} type="text" id="occupation" />
-                    </FormElement>
-                </FormContainer>
+                <Form
+                    nameInput={nameInput}
+                    setNameInput={setNameInput}
+                    numInput={numInput}
+                    setNumInput={setNumInput}
+                    occuInput={occuInput}
+                    setOccuInput={setOccuInput}
+                />
 
             </ThemeProvider>
             <FormButtonContainer>

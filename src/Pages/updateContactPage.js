@@ -56,7 +56,7 @@ export default function UpdateContactPage(props) {
                 setLoading(true);
                 const documentRef = doc(db, 'contacts1', list[cId - 1].code);
                 await deleteDoc(documentRef);
-
+                
                 const collectionRef = collection(db, 'contacts1');
                 addDoc(collectionRef, {
                     name: nameInput,
@@ -70,12 +70,14 @@ export default function UpdateContactPage(props) {
                     })
                 })
             }
-
+            
             //handling Images
             //only if new-image selected
             if (imgSelected) {
+                setLoading(true);
                 await deleteObject(imageRef).then(() => {
                     uploadBytes(imageRef, file);
+                    setLoading(false);
                 })
             }
 

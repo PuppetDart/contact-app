@@ -39,13 +39,6 @@ const LoadScr = styled(motion.div)`
     align-items: center;
 `;
 
-const Loader = styled(motion.div)`
-    height: 20px;
-    width: 20px;
-    background-color: white;
-`;
-
-
 const MainPageSC = styled(motion.div)`
     display: flex;
     overflow-x: hidden;

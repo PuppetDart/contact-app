@@ -49,11 +49,11 @@ export default function UpdateContactPage(props) {
     //S ------------------------------------- EVENT HANDLERS
     const updateContactHandler = async () => {
         try {
-            setLoading(true);
-
+            
             //handling Collection
             //only if any field changed
             if (nameInput != list[cId - 1].name || occuInput != list[cId - 1].occupation || numInput != list[cId - 1].number) {
+                setLoading(true);
                 const documentRef = doc(db, 'contacts1', list[cId - 1].code);
                 await deleteDoc(documentRef);
 

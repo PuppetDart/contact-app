@@ -23,6 +23,7 @@ const LinkContactListItemSC = styled(LinkSC)`
 
     transition: all ease-in-out 0.2s;
     overflow-x: none;
+    user-select: none;
 
     :last-child{
         padding-bottom: 65px;

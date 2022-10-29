@@ -15,9 +15,7 @@ const IconStyleObj = `
     padding: 8px;
     border-radius: 50%;
     transition: all ease-in-out 0.1s;
-    :hover{
-        scale: 1.05;
-    }
+    cursor: pointer;
     :active{
         scale: 0.9;
     }
@@ -69,6 +67,10 @@ const Avatar = styled.div`
     box-shadow: 0 0 40px -10px black;
 
     cursor: pointer;
+    transition: all ease-in-out 0.2s;
+    :active{
+        scale: 0.9;
+    }
 `;
 
 const AddImageIconSC = styled(AddImageIcon)`

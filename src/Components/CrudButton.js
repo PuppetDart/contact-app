@@ -19,6 +19,7 @@ const CrudButtonSC = styled(motion.div)`
     background-color: ${props => props.theme === "white" ? "black" : "white"};
     transition: opacity ease-in-out 0.3s;
     cursor: pointer;
+    user-select: none;
     opacity: 75%;
 
     :hover{

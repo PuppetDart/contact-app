@@ -30,8 +30,13 @@ const ThemeButtonSC = styled(motion.div)`
     z-index: 4;
 
     cursor: pointer;
-    transition: background-color ease 0.5s;
+    user-select: none;
+    transition: background-color ease 0.5s, all ease-in-out 0.1s;
     animation: ${themeButtonAnimation} 8s infinite ease;
+
+    :active{
+        scale: 0.9;
+    }
 
     @media (max-width: 600px) {
         bottom: 20px;

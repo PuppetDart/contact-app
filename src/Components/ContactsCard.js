@@ -8,7 +8,6 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { db, storage } from "../firebase-config";
 
 import { ReactComponent as CallIcon } from "./../icons/callIcon.svg"
-import { CallIconSC } from "./AddUpdateForm";
 
 // ------ components
 import CrudButton from "./CrudButton";
@@ -39,6 +38,12 @@ const Divider = styled(motion.div)`
     display: flex;
     align-items: center;
     gap: 20px;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        background: ${globalColors.lightGrey};
+    }
+    transition: width 1s ease-in-out;
 `;
 
 const ContactContainer = styled.div`
@@ -52,15 +57,19 @@ const ContactsCardSC = styled(motion.div)`
     flex-flow: column;
     gap: 40px;
 
-    margin: 25px 10px 25px 40px;
-
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    z-index: 1;
+    transition: all 0.1s ease-in-out;
+    
+    margin: 40px 40px 40px 60px;
+    @media (max-width: 768px) {
+        margin: 40px 40px 40px 45px;
+    }
 `;
 
 const Avatar = styled.div`
     height: 350px;
-    width: 300px;
+    max-width: 300px;
+    width: 100%;
     
     border-radius: 10px;
     box-shadow: 0 0 40px -10px black;
@@ -71,7 +80,6 @@ const Avatar = styled.div`
     background: url(${props => props.bg});
     background-size: cover;
     background-position-x: center;
-    z-index: 3;
 `;
 
 const Detail = styled.div`
@@ -84,6 +92,9 @@ const Detail = styled.div`
     h4{
         font-weight: 300;
         letter-spacing: 15px;
+        @media (max-width: 600px) {
+            letter-spacing: 10px;
+        }
     }
     h3{
         margin: 0 0 15px;

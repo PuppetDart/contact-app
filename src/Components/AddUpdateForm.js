@@ -44,10 +44,12 @@ const ContainerSC = styled(motion.div)`
     flex-flow: column;
     gap: 40px;
 
-    margin: 20px 40px 25px;
-
+    margin: 40px 40px 40px 60px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    z-index: 1;
+    transition: all 0.4s ease-in-out;
+    @media (max-width: 768px) {
+        margin: 40px 40px 40px 45px;
+    }
 `;
 
 const Avatar = styled.div`
@@ -98,15 +100,36 @@ const FormContainer = styled.div`
 `;
 
 const FormElement = styled.div`
-    display: flex;
+    display: flex;    
     align-items: end;
-    gap: 15px;
+    gap: 25px;
+
+    transition: all 0.2s ease-in-out;
+    @media (max-width: 600px) {
+        gap: 10px;
+        justify-content: space-between;
+    }
 `;
 const MultiInputBoxContainer = styled.div`
     display: flex;
     justify-content: space-between;
     width: 100%;
     gap: 15px;
+
+    @media (max-width: 600px) {
+        gap: 10px;
+        justify-content: space-between;
+    }
+
+    > input{
+        :nth-child(1){
+            width: 45px;
+            @media (max-width: 600px) {
+                width: 35px;
+            }
+            transition: width ease-in-out 0.1s;
+        }
+    }
 `;
 
 const InputContainerSC = styled.div`
@@ -160,24 +183,24 @@ export default function Form(props) {
                     <InputBoxLabel htmlFor="name">NAME</InputBoxLabel>
                     <InputBox value={props.nameInput} onChange={(e) => { props.setNameInput(e.target.value) }} type="text" id="name" />
                 </InputContainerSC>
-                <NameIconSC theme={props.theme} onClick={(e) => { props.setNameInput("") }}/>
+                <NameIconSC theme={props.theme} onClick={(e) => { props.setNameInput("") }} />
             </FormElement>
             <FormElement>
                 <InputContainerSC>
                     <InputBoxLabel htmlFor="number">NUMBER</InputBoxLabel>
                     <MultiInputBoxContainer>
-                        <InputBox style={{ width:"45px" }} value={"+91"} disabled={true} type="text" id="areaCode" />
-                        <InputBox  style={{ width:"100%" }} value={props.numInput} onChange={(e) => props.setNumInput(e.target.value)} type="contact" id="number" />
+                        <InputBox style={{}} value={"+91"} disabled={true} type="text" id="areaCode" />
+                        <InputBox style={{ width: "100%" }} value={props.numInput} onChange={(e) => props.setNumInput(e.target.value)} type="contact" id="number" />
                     </MultiInputBoxContainer>
                 </InputContainerSC>
-                <CallIconSC theme={props.theme} onClick={(e) => { props.setNumInput("") }}/>
+                <CallIconSC theme={props.theme} onClick={(e) => { props.setNumInput("") }} />
             </FormElement>
             <FormElement>
                 <InputContainerSC>
                     <InputBoxLabel htmlFor="occupation">OCCUPATION</InputBoxLabel>
                     <InputBox value={props.occuInput} onChange={(e) => props.setOccuInput(e.target.value)} type="text" id="occupation" />
                 </InputContainerSC>
-                <WorkIconSC theme={props.theme} onClick={(e) => { props.setOccuInput("") }}/>
+                <WorkIconSC theme={props.theme} onClick={(e) => { props.setOccuInput("") }} />
             </FormElement>
         </FormContainer>
     );

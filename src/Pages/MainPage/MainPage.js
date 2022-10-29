@@ -29,12 +29,16 @@ const variants = {
 
 const MainPageSC = styled(motion.div)`
     display: flex;
+
+    height: 100vh;
     overflow-x: hidden;
 
     background-color: ${props => props.theme === "white" ? "white" : globalColors.dark};
     background-image: url(${bgImg});
     background-blend-mode: ${props => props.theme === "white" ? "luminosity" : "color-burn"};
     background-size: cover;
+
+    transition: background-color 0.2s ease-in-out;
 `;
 //E ------ styled-components
 
@@ -52,6 +56,8 @@ export default function MainPage() {
 
     //state managing SearchBox-Input
     const [textInput, setTextInput] = useState("");
+
+    const [collapse, setCollapse]=useState(0);
 
     const [theme, setTheme] = useState("white");
     const themeHandler = () => {
@@ -98,7 +104,7 @@ export default function MainPage() {
                 variants={{ variants }}
             >
 
-                <ThemeProvider.Provider value={{ list, setList, theme, themeHandler, textInput, setTextInput }}>
+                <ThemeProvider.Provider value={{ list, setList, theme, themeHandler, textInput, setTextInput, collapse, setCollapse }}>
 
                     <ContactsPane>
                         <ContactsHeader />

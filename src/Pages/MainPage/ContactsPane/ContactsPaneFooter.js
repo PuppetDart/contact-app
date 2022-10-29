@@ -44,7 +44,6 @@ export default function ContactsFooter(props) {
 
             <ContactsFooterSC theme={theme}>
 
-                <CrudButton initial={{x:-400}} delay={0.1} onClick={()=>{getRecords(setList)}}><RefreshIconSC theme={theme}/> </CrudButton>
                 <LinkStyled to={'/'}>
                     <CrudButton initial={{x:-400}} delay={0.2}><HomeIconSC theme={theme} /></CrudButton>
                 </LinkStyled>

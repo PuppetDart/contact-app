@@ -32,6 +32,13 @@ const ThemeButtonSC = styled(motion.div)`
     cursor: pointer;
     transition: background-color ease 0.5s;
     animation: ${themeButtonAnimation} 8s infinite ease;
+
+    @media (max-width: 600px) {
+        bottom: 20px;
+        right: 25px;
+        height: 18px;
+        width: 18px;
+    }
 `;
 
 const DayIconSC = styled(DayModeIcon)`

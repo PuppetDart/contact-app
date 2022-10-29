@@ -7,7 +7,7 @@
 
 /src/firebase-config.js
 build/
-
+/PhoneBookBuildHost/*
 /coverage
 
 # misc

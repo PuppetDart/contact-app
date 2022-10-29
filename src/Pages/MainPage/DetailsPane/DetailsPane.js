@@ -1,14 +1,15 @@
 import { useContext } from 'react';
+import { motion } from 'framer-motion';
 import styled from 'styled-components/macro';
 
 import { ThemeProvider } from '../MainPage';
 import globalColors from '../../../globalVars';
 
-const DetailsPaneSC = styled.div`
+const DetailsPaneSC = styled(motion.div)`
     flex: 5;
 
-    height: 100vh;
-    min-width: 380px;
+    height: 100%;
+    min-width: 350px;
     
     overflow-x: hidden;
     overflow-y: scroll;

@@ -10,7 +10,7 @@ const LoadScrSC = styled(motion.div)`
     justify-content: center;
     align-items: center;
 
-    height: 100%;
+    min-height: 100vh;
     width: 100%;
 
     background-color: rgba(0, 0, 0, 0.5);

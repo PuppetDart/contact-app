@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/contact-app/static/css/main.b6a68979.css",
-    "main.js": "/contact-app/static/js/main.6d05d16d.js",
+    "main.js": "/contact-app/static/js/main.38671b01.js",
     "static/media/bg1.jpg": "/contact-app/static/media/bg1.be53db7ae2cbce69a715.jpg",
     "static/media/homepageIcon.svg": "/contact-app/static/media/homepageIcon.fa153a4437904a3d6ec8d661381f393f.svg",
     "static/media/clearIcon.svg": "/contact-app/static/media/clearIcon.f5457199865cf8c177ab311219383786.svg",
@@ -15,10 +15,10 @@
     "index.html": "/contact-app/index.html",
     "static/media/nameIcon.svg": "/contact-app/static/media/nameIcon.fb84ac1a1d87e732856d1dd23ea4e0ba.svg",
     "main.b6a68979.css.map": "/contact-app/static/css/main.b6a68979.css.map",
-    "main.6d05d16d.js.map": "/contact-app/static/js/main.6d05d16d.js.map"
+    "main.38671b01.js.map": "/contact-app/static/js/main.38671b01.js.map"
   },
   "entrypoints": [
     "static/css/main.b6a68979.css",
-    "static/js/main.6d05d16d.js"
+    "static/js/main.38671b01.js"
   ]
 }

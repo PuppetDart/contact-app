@@ -1,0 +1,8 @@
+{
+  "short_name": "Phone Book",
+  "name": "Phone Book by Abhishek Pandey",
+  "icons": [
+  ],
+  "start_url": ".",
+  "display": "standalone"
+}

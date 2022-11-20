@@ -1,4 +1,5 @@
-### View on AWS EC2 Instance: [Live](http://18.234.140.39/)
+### Deployed on GitHub-Pages: [Live](https://puppetdart.github.io/contact-app/)
+### Deployed on AWS EC2 Instance: [Inactive](http://18.234.140.39/)
 
 ## Preview Shots:
 

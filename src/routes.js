@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createHashRouter, RouterProvider } from 'react-router-dom';
 
 import MainPage from './Pages/MainPage/MainPage';
 import ErrorPage from './Pages/ErrorPage';
@@ -7,7 +7,7 @@ import Homepage from './Pages/Homepage';
 import AddContactPage from './Pages/AddContactPage';
 import UpdateContactPage from './Pages/UpdateContactPage';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <MainPage/>,
